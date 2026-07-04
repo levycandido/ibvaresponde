@@ -1,0 +1,151 @@
+import { User, Survey, SurveyResponse, SurveyStatus, QuestionType, UserRole, UserStatus } from '@/types'
+
+export const mockCurrentUser: User = {
+  userId: '5e444056-a581-4f3d-bbd3-9ab24cb4c093',
+  nome: 'Claudio',
+  email: 'levyjavadffffev@gmail.com',
+  cor: '#6366f1',
+  roles: [UserRole.ADMIN],
+  status: UserStatus.ACTIVE,
+  createdAt: '2026-06-03T22:15:30.344311+00:00',
+  updatedAt: '2026-06-05T21:40:46.280152+00:00',
+  lastLoginAt: '2026-06-24T10:00:00.000000+00:00',
+}
+
+export const mockSurveys: Survey[] = [
+  {
+    surveyId: 'survey-1',
+    titulo: 'Satisfação com o Serviço Religioso',
+    descricao: 'Avalie sua experiência com nossos serviços e comunidade',
+    status: SurveyStatus.PUBLISHED,
+    dataInicio: '2026-06-10T00:00:00Z',
+    dataFim: '2026-06-30T23:59:59Z',
+    criadoPor: '5e444056-a581-4f3d-bbd3-9ab24cb4c093',
+    perguntas: [
+      {
+        questionId: 'q1',
+        titulo: 'Como você avalia o último culto?',
+        descricao: 'Qual foi sua experiência?',
+        tipo: QuestionType.RADIO,
+        obrigatoria: true,
+        ordem: 1,
+        opcoes: [
+          { optionId: 'op1', titulo: 'Excelente', ordem: 1 },
+          { optionId: 'op2', titulo: 'Muito Bom', ordem: 2 },
+          { optionId: 'op3', titulo: 'Bom', ordem: 3 },
+          { optionId: 'op4', titulo: 'Regular', ordem: 4 },
+          { optionId: 'op5', titulo: 'Precisa Melhorar', ordem: 5 },
+        ],
+      },
+      {
+        questionId: 'q2',
+        titulo: 'Quais aspectos você mais apreciou?',
+        descricao: 'Selecione um ou mais',
+        tipo: QuestionType.CHECKBOX,
+        obrigatoria: true,
+        ordem: 2,
+        opcoes: [
+          { optionId: 'op6', titulo: 'Mensagem', ordem: 1 },
+          { optionId: 'op7', titulo: 'Louvor', ordem: 2 },
+          { optionId: 'op8', titulo: 'Comunhão', ordem: 3 },
+          { optionId: 'op9', titulo: 'Acolhimento', ordem: 4 },
+        ],
+      },
+      {
+        questionId: 'q3',
+        titulo: 'Deixe suas sugestões',
+        descricao: 'Como podemos melhorar?',
+        tipo: QuestionType.MEMO,
+        obrigatoria: false,
+        ordem: 3,
+      },
+    ],
+    createdAt: '2026-06-10T10:00:00Z',
+    updatedAt: '2026-06-24T10:00:00Z',
+  },
+  {
+    surveyId: 'survey-2',
+    titulo: 'Interesse em Grupos de Estudo',
+    descricao: 'Avalie seu interesse em participar de grupos de estudo bíblico',
+    status: SurveyStatus.PUBLISHED,
+    dataInicio: '2026-06-15T00:00:00Z',
+    dataFim: '2026-07-15T23:59:59Z',
+    criadoPor: '5e444056-a581-4f3d-bbd3-9ab24cb4c093',
+    perguntas: [
+      {
+        questionId: 'q4',
+        titulo: 'Você gostaria de participar de um grupo de estudo?',
+        tipo: QuestionType.RADIO,
+        obrigatoria: true,
+        ordem: 1,
+        opcoes: [
+          { optionId: 'op10', titulo: 'Sim', ordem: 1 },
+          { optionId: 'op11', titulo: 'Talvez', ordem: 2 },
+          { optionId: 'op12', titulo: 'Não', ordem: 3 },
+        ],
+      },
+    ],
+    createdAt: '2026-06-15T10:00:00Z',
+    updatedAt: '2026-06-24T10:00:00Z',
+  },
+  {
+    surveyId: 'survey-3',
+    titulo: 'Pesquisa de Novas Iniciativas',
+    descricao: 'Avalie as propostas de novas iniciativas da igreja',
+    status: SurveyStatus.DRAFT,
+    dataInicio: '2026-07-01T00:00:00Z',
+    criadoPor: '5e444056-a581-4f3d-bbd3-9ab24cb4c093',
+    perguntas: [
+      {
+        questionId: 'q5',
+        titulo: 'Qual iniciativa mais interessa a você?',
+        tipo: QuestionType.CHECKBOX,
+        obrigatoria: true,
+        ordem: 1,
+        opcoes: [
+          { optionId: 'op13', titulo: 'Ministério de Jovens', ordem: 1 },
+          { optionId: 'op14', titulo: 'Grupo de Oração', ordem: 2 },
+          { optionId: 'op15', titulo: 'Ação Social', ordem: 3 },
+          { optionId: 'op16', titulo: 'Discipulado', ordem: 4 },
+        ],
+      },
+    ],
+    createdAt: '2026-06-20T10:00:00Z',
+    updatedAt: '2026-06-24T10:00:00Z',
+  },
+]
+
+export const mockResponses: SurveyResponse[] = [
+  {
+    respostaId: 'resp-1',
+    pesquisaId: 'survey-1',
+    userId: 'user-1',
+    perguntaId: 'q1',
+    resposta: 'op1',
+    submittedAt: '2026-06-20T14:30:00Z',
+  },
+  {
+    respostaId: 'resp-2',
+    pesquisaId: 'survey-1',
+    userId: 'user-1',
+    perguntaId: 'q2',
+    resposta: JSON.stringify(['op6', 'op7']),
+    submittedAt: '2026-06-20T14:30:00Z',
+  },
+  {
+    respostaId: 'resp-3',
+    pesquisaId: 'survey-1',
+    userId: 'user-2',
+    perguntaId: 'q1',
+    resposta: 'op2',
+    submittedAt: '2026-06-21T10:15:00Z',
+  },
+  {
+    respostaId: 'resp-4',
+    pesquisaId: 'survey-2',
+    userId: 'user-1',
+    perguntaId: 'q4',
+    resposta: 'op10',
+    submittedAt: '2026-06-22T16:45:00Z',
+  },
+]
