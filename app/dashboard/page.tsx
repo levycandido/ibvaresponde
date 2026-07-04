@@ -134,8 +134,8 @@ export default function DashboardPage() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="grid grid-cols-2 gap-3.5"
           >
+            <div className="grid grid-cols-2 gap-3.5">
             {/* Total de pesquisas */}
             <Card className="p-5">
               <div className="flex items-start gap-4">
@@ -191,6 +191,7 @@ export default function DashboardPage() {
                 </div>
               </div>
             </Card>
+            </div>
           </motion.div>
 
           {/* Active Surveys */}
@@ -198,9 +199,9 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="space-y-4"
           >
-            <div className="flex items-center justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold text-gray-900">📊 Pesquisas Ativas</h2>
               <Link href="/surveys" className="text-primary font-bold text-sm">
                 Ver todas →
@@ -248,6 +249,7 @@ export default function DashboardPage() {
                 </div>
               )
             })()}
+            </div>
           </motion.div>
 
           {/* Inactive Surveys */}

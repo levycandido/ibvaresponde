@@ -117,8 +117,8 @@ export default function UserResponsesPage() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="space-y-4"
             >
+              <div className="space-y-4">
               {uniqueUsers.length === 0 ? (
                 <Card className="p-8 text-center">
                   <AlertCircle size={40} className="text-text-muted mx-auto mb-4 opacity-50" />
@@ -130,14 +130,13 @@ export default function UserResponsesPage() {
                     const userResponseCount = allResponses.filter(r => r.userId === userId).length
 
                     return (
-                      <motion.button
+                      <motion.div
                         key={userId}
-                        onClick={() => setSelectedUserId(userId)}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        className="w-full"
                       >
+                        <button onClick={() => setSelectedUserId(userId)} className="w-full">
                         <Card className="p-5 hover:shadow-lg transition-all cursor-pointer h-full text-left">
                           <div className="flex items-start gap-4">
                             <div className="w-14 h-12 bg-gradient-to-br from-primary to-primary-accent rounded-lg flex items-center justify-center text-white flex-shrink-0">
@@ -156,19 +155,21 @@ export default function UserResponsesPage() {
                             </div>
                           </div>
                         </Card>
-                      </motion.button>
+                        </button>
+                      </motion.div>
                     )
                   })}
                 </div>
               )}
+              </div>
             </motion.div>
           ) : (
             /* User Responses View */
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="space-y-6"
             >
+              <div className="space-y-6">
               {userResponses.length === 0 ? (
                 <Card className="p-8 text-center">
                   <AlertCircle size={40} className="text-text-muted mx-auto mb-4 opacity-50" />
@@ -222,6 +223,7 @@ export default function UserResponsesPage() {
                   })()}
                 </div>
               )}
+              </div>
             </motion.div>
           )}
         </div>

@@ -16,7 +16,7 @@ export function RadioQuestion({ question, value, onChange, disabled }: RadioQues
           key={option.optionId}
           name={question.questionId}
           value={option.optionId}
-          label={option.descricao || option.titulo}
+          label={option.descricao}
           checked={value === option.optionId}
           onChange={(e) => onChange(e.target.value)}
           disabled={disabled}

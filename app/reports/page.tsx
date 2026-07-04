@@ -101,10 +101,10 @@ export default function ReportsPage() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
           >
-            <p className="text-sm font-bold text-text-muted mb-4">Escolha o tipo de relatório:</p>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="mb-8">
+              <p className="text-sm font-bold text-text-muted mb-4">Escolha o tipo de relatório:</p>
+              <div className="grid grid-cols-2 gap-3">
               <Card className="p-4 border-2 border-primary/20 bg-primary/5 cursor-default">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
@@ -130,6 +130,7 @@ export default function ReportsPage() {
                   </div>
                 </Card>
               </Link>
+              </div>
             </div>
           </motion.div>
 
@@ -138,8 +139,8 @@ export default function ReportsPage() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="space-y-4"
             >
+              <div className="space-y-4">
               {publishedSurveys.length === 0 ? (
                 <Card className="p-8 text-center">
                   <AlertCircle size={40} className="text-text-muted mx-auto mb-4 opacity-50" />
@@ -148,14 +149,13 @@ export default function ReportsPage() {
               ) : (
                 <div className="space-y-3">
                   {publishedSurveys.map((survey, index) => (
-                    <motion.button
+                    <motion.div
                       key={survey.surveyId}
-                      onClick={() => handleSelectSurvey(survey.surveyId)}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      className="w-full"
                     >
+                      <button onClick={() => handleSelectSurvey(survey.surveyId)} className="w-full">
                       <Card className="p-5 hover:shadow-lg transition-all cursor-pointer h-full text-left">
                         <div className="flex items-start gap-4">
                           <div className="w-14 h-12 bg-gradient-to-br from-primary to-primary-accent rounded-lg flex items-center justify-center text-white text-xl flex-shrink-0">
@@ -182,18 +182,20 @@ export default function ReportsPage() {
                           </div>
                         </div>
                       </Card>
-                    </motion.button>
+                      </button>
+                    </motion.div>
                   ))}
                 </div>
               )}
+              </div>
             </motion.div>
           ) : (
             /* Survey Results View */
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="space-y-6"
             >
+              <div className="space-y-6">
               {loadingResponses ? (
                 <div className="flex flex-col items-center justify-center py-12">
                   <Loader size={40} className="text-primary animate-spin mb-4" />
@@ -280,7 +282,7 @@ export default function ReportsPage() {
                                         initial={{ width: 0 }}
                                         animate={{ width: `${percentage}%` }}
                                         transition={{ duration: 0.8, ease: 'easeOut' }}
-                                        className="h-full bg-gradient-to-r from-primary to-primary-accent rounded-full"
+                                        style={{ background: 'linear-gradient(to right, var(--color-primary), var(--color-primary-accent))', borderRadius: '9999px', height: '100%' }}
                                       />
                                     </div>
                                   </div>
@@ -335,6 +337,7 @@ export default function ReportsPage() {
                   </div>
                 </>
               )}
+              </div>
             </motion.div>
           )}
         </div>

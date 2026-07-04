@@ -125,7 +125,7 @@ export default function SurveyDetailPage() {
   }
 
   const validateRequiredQuestions = (): string | null => {
-    const requiredQuestions = survey.perguntas.filter(q => q.obrigatoria)
+    const requiredQuestions = (survey.perguntas || []).filter(q => q.obrigatoria)
     for (const question of requiredQuestions) {
       const response = responses[question.questionId]
       if (!response || (Array.isArray(response) && response.length === 0)) {
@@ -229,8 +229,8 @@ export default function SurveyDetailPage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="px-4 sm:px-0 pt-4 pb-6"
         >
+          <div className="px-4 sm:px-0 pt-4 pb-6">
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <h1 className="text-4xl font-bold text-gray-900 leading-tight">{survey.titulo}</h1>
@@ -241,6 +241,7 @@ export default function SurveyDetailPage() {
                 <ArrowLeft size={20} />
               </Button>
             </Link>
+          </div>
           </div>
         </motion.div>
 

@@ -95,29 +95,18 @@ const exchangeCodeForToken = async (
   try {
     const config = oauthConfig[provider]
 
-    const body =
-      provider === 'github'
-        ? JSON.stringify({
-            client_id: config.clientId,
-            client_secret: config.clientSecret,
-            code,
-            redirect_uri: config.redirectUri,
-          })
-        : new URLSearchParams({
-            client_id: config.clientId,
-            client_secret: config.clientSecret,
-            code,
-            redirect_uri: config.redirectUri,
-            grant_type: 'authorization_code',
-          }).toString()
+    const body = new URLSearchParams({
+      client_id: config.clientId,
+      client_secret: config.clientSecret,
+      code,
+      redirect_uri: config.redirectUri,
+      grant_type: 'authorization_code',
+    }).toString()
 
     const response = await fetch(config.tokenUrl, {
       method: 'POST',
       headers: {
-        'Content-Type':
-          provider === 'github'
-            ? 'application/json'
-            : 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'application/json',
       },
       body,

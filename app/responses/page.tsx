@@ -20,7 +20,7 @@ export default function ResponsesPage() {
   // Agrupar respostas por pesquisa
   const surveyResponses = mockSurveys.map(survey => ({
     survey,
-    responses: mockResponses.filter(r => r.pesquisaId === survey.surveyId),
+    responses: mockResponses.filter(r => r.surveyId === survey.surveyId),
   })).filter(item => item.responses.length > 0)
 
   const toggleExpanded = (surveyId: string) => {
@@ -51,13 +51,14 @@ export default function ResponsesPage() {
         <div className="px-4 py-6 space-y-4">
           {surveyResponses.length === 0 ? (
             <motion.div
-              className="py-12 text-center"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
             >
+              <div className="py-12 text-center">
               <div className="text-4xl mb-3">📋</div>
               <p className="text-gray-600 font-medium">Você ainda não respondeu nenhuma pesquisa</p>
               <p className="text-sm text-gray-500 mt-1">Quando responder pesquisas, elas aparecerão aqui</p>
+              </div>
             </motion.div>
           ) : (
             surveyResponses.map((item, index) => {
@@ -107,9 +108,9 @@ export default function ResponsesPage() {
                       >
                         <div className="border-t border-gray-200">
                           <CardBody className="space-y-6">
-                            {survey.perguntas.map(question => {
+                            {(survey.perguntas || []).map(question => {
                               const questionResponses = responses.filter(
-                                r => r.perguntaId === question.questionId
+                                r => r.questionId === question.questionId
                               )
 
                               return (
@@ -130,16 +131,16 @@ export default function ResponsesPage() {
                                       <div>
                                         {questionResponses.map(response => {
                                           const selectedOption = question.opcoes?.find(
-                                            op => op.optionId === response.resposta
+                                            op => op.optionId === response.option
                                           )
                                           return (
                                             <div
-                                              key={response.respostaId}
+                                              key={response.surveyResponseId}
                                               className="flex items-center gap-2"
                                             >
                                               <div className="w-5 h-5 rounded-full border-2 border-primary bg-primary" />
                                               <p className="text-sm text-gray-900 font-medium">
-                                                {selectedOption?.titulo || 'Opção não encontrada'}
+                                                {selectedOption?.descricao || 'Opção não encontrada'}
                                               </p>
                                             </div>
                                           )
@@ -151,8 +152,8 @@ export default function ResponsesPage() {
                                       <div className="space-y-2">
                                         {questionResponses.map(response => {
                                           const selectedIds = JSON.parse(
-                                            typeof response.resposta === 'string'
-                                              ? response.resposta
+                                            typeof response.option === 'string'
+                                              ? response.option
                                               : '[]'
                                           )
                                           return selectedIds.map((optionId: string) => {
@@ -177,7 +178,7 @@ export default function ResponsesPage() {
                                                   </svg>
                                                 </div>
                                                 <p className="text-sm text-gray-900 font-medium">
-                                                  {option?.titulo || 'Opção não encontrada'}
+                                                  {option?.descricao || 'Opção não encontrada'}
                                                 </p>
                                               </div>
                                             )
@@ -190,11 +191,11 @@ export default function ResponsesPage() {
                                       <div className="space-y-2">
                                         {questionResponses.map(response => (
                                           <div
-                                            key={response.respostaId}
+                                            key={response.surveyResponseId}
                                             className="bg-white rounded p-3 border border-gray-200 text-sm text-gray-700"
                                           >
                                             <p className="whitespace-pre-wrap break-words">
-                                              {response.resposta}
+                                              {response.option}
                                             </p>
                                           </div>
                                         ))}

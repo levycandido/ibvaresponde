@@ -22,7 +22,7 @@ export function CheckboxQuestion({ question, value, onChange, disabled }: Checkb
       {question.opcoes?.map((option) => (
         <Checkbox
           key={option.optionId}
-          label={option.descricao || option.titulo}
+          label={option.descricao}
           checked={value.includes(option.optionId)}
           onChange={(e) => handleChange(option.optionId, e.target.checked)}
           disabled={disabled}
