@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { oauthConfig, OAuthProvider } from '@/config/oauth.config'
+import { getOAuthConfig, OAuthProvider } from '@/config/oauth.config'
+
+const oauthConfig = getOAuthConfig()
 
 interface OAuthUser {
   id: string
