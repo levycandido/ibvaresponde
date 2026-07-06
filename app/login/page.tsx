@@ -40,50 +40,10 @@ function LoginContent() {
         {/* Overlay Gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-primary/40" />
 
-        {/* Church Building - Bottom Left */}
-        <svg
-          className="absolute bottom-0 left-0 w-96 h-96 opacity-30"
-          viewBox="0 0 400 400"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Main Building */}
-          <path d="M100 250L100 350H300V250" stroke="white" strokeWidth="2" fill="rgba(255,255,255,0.1)" />
-
-          {/* Roof */}
-          <path d="M100 250L200 150L300 250" stroke="white" strokeWidth="2" fill="rgba(255,255,255,0.1)" />
-
-          {/* Cross on top */}
-          <line x1="200" y1="130" x2="200" y2="170" stroke="white" strokeWidth="3" />
-          <line x1="180" y1="150" x2="220" y2="150" stroke="white" strokeWidth="3" />
-
-          {/* Entrance Door */}
-          <rect x="185" y="280" width="30" height="70" stroke="white" strokeWidth="2" fill="rgba(255,255,255,0.1)" />
-
-          {/* Door Handle */}
-          <circle cx="210" cy="315" r="2" fill="white" />
-
-          {/* Window 1 Left */}
-          <rect x="130" y="270" width="25" height="25" stroke="white" strokeWidth="1.5" fill="rgba(255,255,255,0.1)" />
-
-          {/* Window 2 Right */}
-          <rect x="245" y="270" width="25" height="25" stroke="white" strokeWidth="1.5" fill="rgba(255,255,255,0.1)" />
-
-          {/* Side Windows Upper Left */}
-          <rect x="115" y="200" width="20" height="20" stroke="white" strokeWidth="1.5" fill="rgba(255,255,255,0.1)" />
-
-          {/* Side Windows Upper Right */}
-          <rect x="265" y="200" width="20" height="20" stroke="white" strokeWidth="1.5" fill="rgba(255,255,255,0.1)" />
-
-          {/* Bell Tower Top */}
-          <rect x="155" y="120" width="25" height="40" stroke="white" strokeWidth="1.5" fill="rgba(255,255,255,0.05)" />
-          <circle cx="167.5" cy="115" r="8" stroke="white" strokeWidth="1.5" fill="rgba(255,255,255,0.05)" />
-        </svg>
-
-        {/* Dot Pattern - Bottom Left Corner */}
-        <div className="absolute bottom-0 left-0 w-48 h-48 opacity-10">
-          <div className="grid grid-cols-6 gap-4 w-full h-full p-8">
-            {Array.from({ length: 36 }).map((_, i) => (
+        {/* Dot Pattern - Bottom Left */}
+        <div className="absolute bottom-0 left-0 w-64 h-64 opacity-20">
+          <div className="grid grid-cols-8 gap-4 w-full h-full p-8">
+            {Array.from({ length: 64 }).map((_, i) => (
               <div key={i} className="w-1 h-1 bg-white rounded-full" />
             ))}
           </div>
