@@ -23,25 +23,37 @@ function LoginContent() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Gradiente roxo no fundo (base) */}
-      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-primary/10 via-primary-accent/5 to-transparent pointer-events-none" />
+    <div className="min-h-screen bg-gradient-to-b from-white to-white flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Gradiente roxo decorativo no fundo */}
+      <div className="absolute bottom-0 left-0 right-0 h-80 bg-gradient-to-t from-primary/20 via-primary-accent/10 to-transparent pointer-events-none wave-pattern" />
+
+      {/* SVG Wave Pattern */}
+      <svg className="absolute bottom-0 left-0 right-0 pointer-events-none" viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style={{stopColor: '#8B5CF6', stopOpacity: 0.1}} />
+            <stop offset="100%" style={{stopColor: '#A78BFA', stopOpacity: 0.3}} />
+          </linearGradient>
+        </defs>
+        <path fill="url(#waveGradient)" fillOpacity="0.7" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,144C960,149,1056,139,1152,128C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      </svg>
 
       <Container withBottomNav={false}>
         <div className="w-full max-w-md relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center"
           >
             {/* Mensagem de Erro */}
             {errorMessage && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-6"
+                className="mb-6 w-full"
               >
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+                <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
                   <AlertCircle size={20} className="text-red-600 flex-shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <p className="text-red-800 text-sm font-medium">{errorMessage}</p>
@@ -56,95 +68,134 @@ function LoginContent() {
               </motion.div>
             )}
 
-            {/* Logo/Ícone */}
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <Users size={32} className="text-primary" />
+            {/* Logo/Ícone com animação */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
+              className="mb-6"
+            >
+              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-primary/15 to-primary-accent/10 rounded-3xl flex items-center justify-center">
+                <Users size={40} className="text-primary stroke-2" />
               </div>
-            </div>
+            </motion.div>
 
             {/* Título Principal */}
-            <div className="text-center mb-2">
-              <h1 className="text-3xl font-bold text-primary mb-1">IBVA</h1>
-              <h2 className="text-2xl font-bold text-primary">Responde</h2>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+              className="text-center mb-1"
+            >
+              <h1 className="text-4xl font-bold text-gray-900">IBVA</h1>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.4 }}
+              className="text-center mb-6"
+            >
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary-accent bg-clip-text text-transparent">
+                Responde
+              </h2>
+            </motion.div>
 
             {/* Subtítulos */}
-            <div className="text-center mb-8">
-              <p className="text-sm font-medium text-gray-900">Sistema de Pesquisas</p>
-              <p className="text-xs text-text-muted">Igreja Batista Vida Abundante</p>
-            </div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              className="text-center mb-8"
+            >
+              <p className="text-sm font-semibold text-gray-900">Sistema de Pesquisas</p>
+              <p className="text-xs text-text-muted mt-1">Igreja Batista Vida Abundante</p>
+            </motion.div>
 
             {/* Bem-vindo */}
-            <div className="text-center mb-6">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, duration: 0.4 }}
+              className="text-center mb-8 px-2"
+            >
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Bem-vindo!</h3>
-              <p className="text-sm text-text-muted">
+              <p className="text-sm text-text-muted leading-relaxed">
                 Faça login para responder pesquisas e contribuir com a nossa igreja.
               </p>
-            </div>
+            </motion.div>
 
             {/* Botões de Login */}
-            <div className="space-y-3 mb-6">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.4 }}
+              className="space-y-3 w-full mb-5"
+            >
               {/* Google */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+              <button
                 onClick={() => handleOAuthLogin('google')}
                 type="button"
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-full transition-all flex items-center justify-center gap-2 shadow-md"
+                className="w-full bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-3.5 px-4 rounded-full transition-all flex items-center justify-center gap-2.5 shadow-lg hover:shadow-xl"
               >
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                   <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                   <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                Entrar com Google
-              </motion.button>
+                <span>Entrar com Google</span>
+              </button>
 
               {/* Outlook */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+              <button
                 onClick={() => handleOAuthLogin('outlook')}
                 type="button"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-full transition-all flex items-center justify-center gap-2 shadow-md"
+                className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-3.5 px-4 rounded-full transition-all flex items-center justify-center gap-2.5 shadow-lg hover:shadow-xl"
               >
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M2 4h8v8H2V4zm10 0h8v8h-8V4zM2 14h8v8H2v-8zm10 0h8v8h-8v-8z"/>
                 </svg>
-                Entrar com Outlook
-              </motion.button>
+                <span>Entrar com Outlook</span>
+              </button>
+
+              {/* Divisor "ou" */}
+              <div className="relative my-5">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-text-muted">ou</span>
+                </div>
+              </div>
 
               {/* Outra Conta */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+              <button
                 type="button"
-                className="w-full bg-white border-2 border-gray-300 hover:border-primary text-gray-700 font-semibold py-3 px-4 rounded-full transition-all flex items-center justify-center gap-2"
+                className="w-full bg-white border-2 border-gray-300 hover:border-primary text-gray-700 font-bold py-3.5 px-4 rounded-full transition-all flex items-center justify-center gap-2.5 hover:bg-gray-50"
               >
-                <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="w-6 h-6 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-                Entrar com outra conta
-              </motion.button>
-            </div>
-
-            {/* Divisor "ou" */}
-            <div className="text-center mb-6">
-              <p className="text-xs text-text-muted">ou</p>
-            </div>
+                <span>Entrar com outra conta</span>
+              </button>
+            </motion.div>
 
             {/* Footer com Segurança */}
-            <div className="text-center pt-6 border-t border-gray-200">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Shield size={16} className="text-primary" />
-                <p className="text-xs text-text-muted font-medium">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.4 }}
+              className="text-center pt-8 pb-4"
+            >
+              <div className="flex items-center justify-center gap-2.5 mb-3">
+                <Shield size={18} className="text-primary flex-shrink-0" />
+                <p className="text-xs text-text-muted font-medium leading-relaxed">
                   Seus dados estão protegidos<br/>e nunca serão compartilhados.
                 </p>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </Container>
