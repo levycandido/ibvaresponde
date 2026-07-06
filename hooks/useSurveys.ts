@@ -16,9 +16,9 @@ export function useSurveys(): UseSurveysState {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
-  const fetchSurveys = async () => {
+  const fetchSurveys = async (showLoading = true) => {
     try {
-      setLoading(true)
+      if (showLoading) setLoading(true)
       setError(null)
       const data = await surveyService.getAllSurveys()
       setSurveys(data)
@@ -27,12 +27,12 @@ export function useSurveys(): UseSurveysState {
       setError(error)
       console.error('Erro ao buscar pesquisas:', error)
     } finally {
-      setLoading(false)
+      if (showLoading) setLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchSurveys()
+    fetchSurveys(false)
   }, [])
 
   return {
@@ -48,9 +48,9 @@ export function usePublishedSurveys(): UseSurveysState {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
-  const fetchSurveys = async () => {
+  const fetchSurveys = async (showLoading = true) => {
     try {
-      setLoading(true)
+      if (showLoading) setLoading(true)
       setError(null)
       const allSurveys = await surveyService.getAllSurveys()
 
@@ -65,12 +65,12 @@ export function usePublishedSurveys(): UseSurveysState {
       setError(error)
       console.error('Erro ao buscar pesquisas publicadas:', error)
     } finally {
-      setLoading(false)
+      if (showLoading) setLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchSurveys()
+    fetchSurveys(false)
   }, [])
 
   return {
@@ -93,9 +93,9 @@ export function useSurvey(surveyId: string): UseSurveyState {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
-  const fetchSurvey = async () => {
+  const fetchSurvey = async (showLoading = true) => {
     try {
-      setLoading(true)
+      if (showLoading) setLoading(true)
       setError(null)
       const data = await surveyService.getSurveyById(surveyId)
       setSurvey(data)
@@ -104,13 +104,13 @@ export function useSurvey(surveyId: string): UseSurveyState {
       setError(error)
       console.error(`Erro ao buscar pesquisa ${surveyId}:`, error)
     } finally {
-      setLoading(false)
+      if (showLoading) setLoading(false)
     }
   }
 
   useEffect(() => {
     if (surveyId) {
-      fetchSurvey()
+      fetchSurvey(false)
     }
   }, [surveyId])
 
@@ -147,9 +147,9 @@ export function useSurveyResponses(surveyId: string): UseSurveyResponsesState {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
-  const fetchResponses = async () => {
+  const fetchResponses = async (showLoading = true) => {
     try {
-      setLoading(true)
+      if (showLoading) setLoading(true)
       setError(null)
       const response = await surveyService.getSurveyResponses(surveyId)
       setData(response)
@@ -158,13 +158,13 @@ export function useSurveyResponses(surveyId: string): UseSurveyResponsesState {
       setError(error)
       console.error(`Erro ao buscar respostas da pesquisa ${surveyId}:`, error)
     } finally {
-      setLoading(false)
+      if (showLoading) setLoading(false)
     }
   }
 
   useEffect(() => {
     if (surveyId) {
-      fetchResponses()
+      fetchResponses(false)
     }
   }, [surveyId])
 
