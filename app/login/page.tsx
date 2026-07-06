@@ -26,10 +26,10 @@ function LoginContent() {
   return (
     <div className="min-h-screen bg-white flex">
       {/* Desktop: Left Side with Background Image */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-primary to-primary-accent">
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary-accent">
         {/* Background Image */}
         <div
-          className="absolute inset-0 opacity-50"
+          className="absolute inset-0"
           style={{
             backgroundImage: 'url(/imagens/ibvaLoginDesktop.png)',
             backgroundSize: 'cover',
@@ -37,41 +37,52 @@ function LoginContent() {
           }}
         />
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent" />
+        {/* Overlay Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-primary/40" />
+
+        {/* Dot Pattern - Bottom Left */}
+        <div className="absolute bottom-0 left-0 w-64 h-64 opacity-20">
+          <div className="grid grid-cols-8 gap-4 w-full h-full p-8">
+            {Array.from({ length: 64 }).map((_, i) => (
+              <div key={i} className="w-1 h-1 bg-white rounded-full" />
+            ))}
+          </div>
+        </div>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col justify-between p-12 text-white w-full">
+        <div className="relative z-10 flex flex-col justify-between p-16 text-white w-full h-full">
           <div>
-            {/* Logo and Title */}
+            {/* Logo */}
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="mb-8"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="w-24 h-24 mb-12"
             >
-              <div className="w-20 h-20 mb-6">
-                <Image
-                  src="/imagens/ibvaLoginMobile.png"
-                  alt="IBVA Responde Logo"
-                  width={80}
-                  height={80}
-                  className="w-full h-full object-contain filter brightness-0 invert"
-                />
-              </div>
-              <h1 className="text-5xl font-bold mb-2">IBVA</h1>
-              <h2 className="text-4xl font-light opacity-90">Responde</h2>
+              <Image
+                src="/imagens/ibvaLoginMobile.png"
+                alt="IBVA Responde Logo"
+                width={96}
+                height={96}
+                className="w-full h-full object-contain filter brightness-0 invert"
+              />
             </motion.div>
 
-            {/* Subtitle */}
+            {/* Title */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-              className="mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
             >
-              <p className="text-sm font-medium opacity-90">Sistema de Pesquisas</p>
-              <p className="text-sm opacity-75">Igreja Batista Vida Abundante</p>
+              <h1 className="text-6xl font-bold text-white mb-1 leading-tight">IBVA</h1>
+              <h2 className="text-5xl font-light text-purple-200 mb-8">Responde</h2>
+
+              {/* Subtitle */}
+              <p className="text-sm font-semibold text-white/90 mb-2">Sistema de Pesquisas</p>
+              <p className="text-sm text-white/70 mb-12">Igreja Batista Vida Abundante</p>
+
+              {/* Divider */}
+              <div className="h-px bg-white/30 mb-8"></div>
             </motion.div>
           </div>
 
@@ -79,17 +90,19 @@ function LoginContent() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="flex items-center gap-3"
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="flex items-start gap-4"
           >
-            <Heart size={24} className="text-white" />
-            <p className="text-sm font-medium">Sua participação faz a diferença na nossa igreja!</p>
+            <Heart size={24} className="text-white flex-shrink-0 mt-1" />
+            <p className="text-base font-medium text-white">
+              Sua participação faz a diferença na nossa igreja!
+            </p>
           </motion.div>
         </div>
       </div>
 
       {/* Right Side - Login Content (Mobile Full, Desktop Right Half) */}
-      <div className="w-full lg:w-1/2 bg-white flex items-center justify-center p-4 lg:p-12 relative overflow-hidden">
+      <div className="w-full lg:w-1/2 bg-white flex items-center justify-center p-4 lg:p-8 relative overflow-hidden">
         {/* Mobile: Gradiente roxo decorativo no fundo */}
         <div className="lg:hidden absolute bottom-0 left-0 right-0 h-80 bg-gradient-to-t from-primary/20 via-primary-accent/10 to-transparent pointer-events-none" />
 
@@ -105,12 +118,12 @@ function LoginContent() {
         </svg>
 
         <Container withBottomNav={false}>
-          <div className="w-full max-w-md relative z-10">
+          <div className="w-full max-w-sm relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="flex flex-col items-center"
+              className="flex flex-col"
             >
               {/* Mensagem de Erro */}
               {errorMessage && (
@@ -134,14 +147,14 @@ function LoginContent() {
                 </motion.div>
               )}
 
-              {/* Logo/Ícone com animação (Mobile only) */}
+              {/* Logo Mobile Only */}
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.1, duration: 0.4 }}
                 className="mb-6 lg:hidden"
               >
-                <div className="w-28 h-28 mx-auto relative">
+                <div className="w-28 h-28 mx-auto">
                   <Image
                     src="/imagens/ibvaLoginMobile.png"
                     alt="IBVA Responde Logo"
@@ -153,7 +166,7 @@ function LoginContent() {
                 </div>
               </motion.div>
 
-              {/* Título Principal (Mobile only) */}
+              {/* Title Mobile Only */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -174,7 +187,7 @@ function LoginContent() {
                 </h2>
               </motion.div>
 
-              {/* Subtítulos (Mobile only) */}
+              {/* Subtitles Mobile Only */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -185,20 +198,22 @@ function LoginContent() {
                 <p className="text-xs text-text-muted mt-1">Igreja Batista Vida Abundante</p>
               </motion.div>
 
-              {/* Bem-vindo */}
+              {/* Welcome */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35, duration: 0.4 }}
-                className="text-center mb-8 px-2"
+                className="text-center mb-8"
               >
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">Bem-vindo(a)!</h3>
-                <p className="text-sm text-text-muted leading-relaxed">
+                <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                  Bem-vindo(a)!
+                </h3>
+                <p className="text-sm lg:text-base text-text-muted leading-relaxed">
                   Faça login para responder pesquisas e contribuir com a nossa igreja.
                 </p>
               </motion.div>
 
-              {/* Botões de Login */}
+              {/* Buttons */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -209,7 +224,7 @@ function LoginContent() {
                 <button
                   onClick={() => handleOAuthLogin('google')}
                   type="button"
-                  className="w-full bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-3.5 px-4 rounded-full transition-all flex items-center justify-center gap-2.5 shadow-lg hover:shadow-xl"
+                  className="w-full bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-4 px-4 rounded-full transition-all flex items-center justify-center gap-3 shadow-lg hover:shadow-xl text-base"
                 >
                   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -224,7 +239,7 @@ function LoginContent() {
                 <button
                   onClick={() => handleOAuthLogin('outlook')}
                   type="button"
-                  className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-3.5 px-4 rounded-full transition-all flex items-center justify-center gap-2.5 shadow-lg hover:shadow-xl"
+                  className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-4 px-4 rounded-full transition-all flex items-center justify-center gap-3 shadow-lg hover:shadow-xl text-base"
                 >
                   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M2 4h8v8H2V4zm10 0h8v8h-8V4zM2 14h8v8H2v-8zm10 0h8v8h-8v-8z"/>
@@ -232,20 +247,20 @@ function LoginContent() {
                   <span>Entrar com Outlook</span>
                 </button>
 
-                {/* Divisor "ou" */}
-                <div className="relative my-5">
+                {/* Divider */}
+                <div className="relative my-6">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-300"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-text-muted">ou</span>
+                    <span className="px-2 bg-white text-text-muted font-medium">ou</span>
                   </div>
                 </div>
 
-                {/* Outra Conta */}
+                {/* Other Account */}
                 <button
                   type="button"
-                  className="w-full bg-white border-2 border-gray-300 hover:border-primary text-gray-700 font-bold py-3.5 px-4 rounded-full transition-all flex items-center justify-center gap-2.5 hover:bg-gray-50"
+                  className="w-full bg-white border-2 border-gray-400 hover:border-primary text-gray-700 font-bold py-4 px-4 rounded-full transition-all flex items-center justify-center gap-3 hover:bg-gray-50 text-base"
                 >
                   <svg className="w-6 h-6 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -255,29 +270,22 @@ function LoginContent() {
                 </button>
               </motion.div>
 
-              {/* Footer com Segurança */}
+              {/* Footer */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45, duration: 0.4 }}
-                className="text-center pt-8 pb-4 w-full"
+                className="text-center pt-8 border-t border-gray-200 w-full"
               >
-                <div className="flex items-center justify-center gap-2.5 mb-3">
-                  <Shield size={18} className="text-primary flex-shrink-0" />
-                  <p className="text-xs text-text-muted font-medium leading-relaxed">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <Shield size={20} className="text-primary flex-shrink-0" />
+                  <p className="text-sm text-text-muted font-medium">
                     Seus dados estão protegidos<br/>e nunca serão compartilhados.
                   </p>
                 </div>
-              </motion.div>
 
-              {/* Copyright (Desktop only) */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.4 }}
-                className="hidden lg:block text-center pt-8 border-t border-gray-200 w-full mt-auto"
-              >
-                <p className="text-xs text-text-muted">
+                {/* Copyright Desktop Only */}
+                <p className="hidden lg:block text-xs text-text-muted mt-6">
                   © 2026 Igreja Batista Vida Abundante. Todos os direitos reservados.
                 </p>
               </motion.div>
