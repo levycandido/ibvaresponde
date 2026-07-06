@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { FileText, Plus, AlertCircle, Loader, HelpCircle, CheckCircle2 } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -18,34 +18,16 @@ export default function SurveysPage() {
   const [filter, setFilter] = useState<'all' | 'active' | 'closed'>('active')
   const { surveys, loading, error, refetch } = usePublishedSurveys()
   const { user } = useCurrentUser()
-  const isAdmin = user?.id === 'cf44bb30-147b-410b-b05b-75911e6c29f9'
+  const isAdmin = user?.roles?.includes('admin') || user?.roles?.includes('ADMIN')
 
-  const filteredSurveys = surveys.filter(survey => {
-    if (filter === 'all') return true
-    if (filter === 'active') return survey.status === SurveyStatus.PUBLISHED && isSurveyActive(survey.dataFim)
-    if (filter === 'closed') return survey.status === SurveyStatus.CLOSED || (survey.status === SurveyStatus.PUBLISHED && !isSurveyActive(survey.dataFim))
-    return true
-  })
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.2,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
-    },
-  }
+  const filteredSurveys = useMemo(() =>
+    surveys.filter(survey => {
+      if (filter === 'all') return true
+      if (filter === 'active') return survey.status === SurveyStatus.PUBLISHED && isSurveyActive(survey.dataFim)
+      if (filter === 'closed') return survey.status === SurveyStatus.CLOSED || (survey.status === SurveyStatus.PUBLISHED && !isSurveyActive(survey.dataFim))
+      return true
+    }), [surveys, filter]
+  )
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -167,28 +149,19 @@ export default function SurveysPage() {
 
           {/* Surveys List */}
           {!loading && !error && (
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="space-y-4"
-            >
+            <div className="space-y-4">
               {filteredSurveys.length === 0 ? (
-                <motion.div
-                  variants={itemVariants}
-                  className="text-center py-16"
-                >
+                <div className="text-center py-16">
                   <div className="mb-4">
                     <HelpCircle size={56} className="mx-auto text-gray-300" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">Nenhuma pesquisa encontrada</h3>
                   <p className="text-gray-600">Volte em breve para novas pesquisas da comunidade</p>
-                </motion.div>
+                </div>
               ) : (
-                filteredSurveys.map((survey, index) => (
-                  <motion.div
+                filteredSurveys.map((survey) => (
+                  <div
                     key={survey.surveyId}
-                    variants={itemVariants}
                   >
                     <Link href={`/surveys/${survey.surveyId}`}>
                       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all group cursor-pointer overflow-hidden">
@@ -261,10 +234,10 @@ export default function SurveysPage() {
                         </Link>
                       </div>
                     )}
-                  </motion.div>
+                  </div>
                 ))
               )}
-            </motion.div>
+            </div>
           )}
         </div>
       </Container>
