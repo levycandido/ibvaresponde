@@ -104,7 +104,7 @@ export function useSurvey(surveyId: string): UseSurveyState {
       setError(error)
       console.error(`Erro ao buscar pesquisa ${surveyId}:`, error)
     } finally {
-      if (showLoading) setLoading(false)
+      setLoading(false)
     }
   }
 
