@@ -97,13 +97,6 @@ export default function ProfilePage() {
 
                 <div className="flex items-start justify-between pb-4 border-b border-gray-100">
                   <div>
-                    <p className="text-sm text-gray-600 font-medium">ID do Usuário</p>
-                    <p className="text-gray-900 text-sm mt-1 font-mono">{user?.id}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start justify-between pb-4 border-b border-gray-100">
-                  <div>
                     <p className="text-sm text-gray-600 font-medium">Provedor</p>
                     <span className="text-sm font-medium px-3 py-1 rounded-full mt-1 inline-block bg-blue-100 text-blue-800">
                       {user?.provider === 'google' ? 'Google' : user?.provider === 'outlook' ? 'Outlook' : user?.provider}
