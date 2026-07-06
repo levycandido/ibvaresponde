@@ -6,7 +6,6 @@ import { motion } from 'framer-motion'
 import { Container } from '@/components/layout/container'
 import { AlertCircle, X, Shield } from 'lucide-react'
 import Image from 'next/image'
-import ibvaLogo from '@/imagens/ibvaLoginMobile.png'
 
 function LoginContent() {
   const searchParams = useSearchParams()
@@ -79,7 +78,7 @@ function LoginContent() {
             >
               <div className="w-28 h-28 mx-auto relative">
                 <Image
-                  src={ibvaLogo}
+                  src="/imagens/ibvaLoginMobile.png"
                   alt="IBVA Responde Logo"
                   width={112}
                   height={112}
