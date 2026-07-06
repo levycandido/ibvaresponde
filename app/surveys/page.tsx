@@ -48,6 +48,7 @@ export default function SurveysPage() {
             <div
               className="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-lg font-bold"
               style={{ backgroundColor: user?.cor || '#5B5FEF' }}
+              suppressHydrationWarning
             >
               {user?.nome?.charAt(0).toUpperCase() || 'U'}
             </div>
