@@ -110,7 +110,7 @@ export function useSurvey(surveyId: string): UseSurveyState {
 
   useEffect(() => {
     if (surveyId) {
-      fetchSurvey(false)
+      fetchSurvey(true)
     }
   }, [surveyId])
 
