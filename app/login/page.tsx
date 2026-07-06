@@ -25,8 +25,18 @@ function LoginContent() {
 
   return (
     <div className="min-h-screen bg-white flex">
-      {/* Desktop: Left Side with Gradient Only */}
+      {/* Desktop: Left Side with Background Image */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-primary to-primary-accent">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 opacity-50"
+          style={{
+            backgroundImage: 'url(/imagens/ibvaLoginDesktop.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent" />
 
