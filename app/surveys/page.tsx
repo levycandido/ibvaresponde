@@ -40,10 +40,10 @@ export default function SurveysPage() {
         >
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h1 className="text-4xl font-bold text-gray-900 leading-tight">
+              <h1 className="text-4xl font-bold text-gray-900 leading-tight" suppressHydrationWarning>
                 Olá, {user?.nome || 'Usuário'}! 👋
               </h1>
-              <p className="text-gray-600 mt-2">Resumo rápido das pesquisas da igreja.</p>
+              <p className="text-gray-600 mt-2" suppressHydrationWarning>Resumo rápido das pesquisas da igreja.</p>
             </div>
             <div
               className="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-lg font-bold"
