@@ -91,6 +91,19 @@ export default function SurveyDetailPage() {
   }
 
   // Error state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+        <Container withBottomNav>
+          <div className="flex flex-col items-center justify-center py-12">
+            <Loader size={40} className="text-primary animate-spin mb-4" />
+            <p className="text-text-muted font-medium">Carregando pesquisa...</p>
+          </div>
+        </Container>
+      </div>
+    )
+  }
+
   if (error || !survey) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
