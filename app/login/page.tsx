@@ -52,21 +52,6 @@ function LoginContent() {
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-between p-16 text-white w-full h-full">
           <div>
-            {/* Logo */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="w-24 h-24 mb-12"
-            >
-              <Image
-                src="/imagens/ibvaLoginMobile.png"
-                alt="IBVA Responde Logo"
-                width={96}
-                height={96}
-                className="w-full h-full object-contain filter brightness-0 invert"
-              />
-            </motion.div>
 
             {/* Title */}
             <motion.div
