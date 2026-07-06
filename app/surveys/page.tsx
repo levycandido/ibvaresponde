@@ -45,20 +45,11 @@ export default function SurveysPage() {
               </h1>
               <p className="text-gray-600 mt-2">Resumo rápido das pesquisas da igreja.</p>
             </div>
-            <div className="flex items-center gap-2 flex-shrink-0">
-              {isAdmin && (
-                <Link href="/surveys/new">
-                  <Button variant="primary" size="sm" className="flex items-center justify-center w-10 h-10 p-0">
-                    <Plus size={18} />
-                  </Button>
-                </Link>
-              )}
-              <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-lg font-bold"
-                style={{ backgroundColor: user?.cor || '#5B5FEF' }}
-              >
-                {user?.nome?.charAt(0).toUpperCase() || 'U'}
-              </div>
+            <div
+              className="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-lg font-bold"
+              style={{ backgroundColor: user?.cor || '#5B5FEF' }}
+            >
+              {user?.nome?.charAt(0).toUpperCase() || 'U'}
             </div>
           </div>
         </motion.div>
@@ -240,6 +231,22 @@ export default function SurveysPage() {
             </div>
           )}
         </div>
+        {/* Floating Action Button (FAB) for Admin */}
+        {isAdmin && (
+          <Link href="/surveys/new">
+            <motion.button
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-r from-primary to-primary-accent text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all z-40"
+              title="Nova Pesquisa"
+            >
+              <Plus size={24} />
+            </motion.button>
+          </Link>
+        )}
       </Container>
       <BottomNav />
     </div>
