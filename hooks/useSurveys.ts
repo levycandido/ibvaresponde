@@ -13,7 +13,7 @@ interface UseSurveysState {
 
 export function useSurveys(): UseSurveysState {
   const [surveys, setSurveys] = useState<Survey[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
   const fetchSurveys = async (showLoading = true) => {
@@ -45,7 +45,7 @@ export function useSurveys(): UseSurveysState {
 
 export function usePublishedSurveys(): UseSurveysState {
   const [surveys, setSurveys] = useState<Survey[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
   const fetchSurveys = async (showLoading = true) => {
@@ -90,7 +90,7 @@ interface UseSurveyState {
 
 export function useSurvey(surveyId: string): UseSurveyState {
   const [survey, setSurvey] = useState<Survey | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
   const fetchSurvey = async (showLoading = true) => {
@@ -144,7 +144,7 @@ export function useSurveyResponses(surveyId: string): UseSurveyResponsesState {
     count: 0,
     respostas: [],
   })
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
   const fetchResponses = async (showLoading = true) => {
