@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { FileText, BarChart3, Users, Loader } from 'lucide-react'
-import { motion } from 'framer-motion'
 import { Card, CardBody } from '@/components/ui/card'
 import { Container } from '@/components/layout/container'
 import { BottomNav } from '@/components/layout/bottom-nav'
@@ -35,31 +34,31 @@ export default function DashboardPage() {
       try {
         const fetchStart = performance.now()
         console.log(`[Dashboard] 🔄 Iniciando fetch de respostas em: ${new Date().toLocaleTimeString()}`)
-        console.log(`[Dashboard] 📊 Total de pesquisas a carregar: ${surveys.length}`)
 
         setLoadingResponses(true)
 
-        // Fazer fetches em PARALELO ao invés de sequencialmente
-        const promises = surveys.map(survey =>
-          surveyService.getSurveyResponses(survey.surveyId)
-            .then(response => {
-              const elapsed = (performance.now() - fetchStart).toFixed(2)
-              console.log(`[Dashboard] ✅ Respostas de "${survey.titulo}" carregadas em ${elapsed}ms`)
-              return response.respostas || []
-            })
-            .catch(err => {
-              console.error(`[Dashboard] ❌ Erro ao buscar respostas de ${survey.surveyId}:`, err)
-              return []
-            })
-        )
+        // Carregar apenas pesquisas publicadas
+        const publishedSurveys = surveys.filter(s => s.status === SurveyStatus.PUBLISHED)
+        console.log(`[Dashboard] 📊 Pesquisas publicadas a carregar: ${publishedSurveys.length}`)
 
-        const allRespArrays = await Promise.all(promises)
+        // Limitar a 3 requisições paralelas para evitar sobrecarregar a API
+        const batchSize = 3
+        const allRespArrays = []
+
+        for (let i = 0; i < publishedSurveys.length; i += batchSize) {
+          const batch = publishedSurveys.slice(i, i + batchSize)
+          const batchPromises = batch.map(survey =>
+            surveyService.getSurveyResponses(survey.surveyId)
+              .then(response => response.respostas || [])
+              .catch(() => [])
+          )
+          const batchResults = await Promise.all(batchPromises)
+          allRespArrays.push(...batchResults)
+        }
+
         const allResps = allRespArrays.flat()
-
         const totalTime = (performance.now() - fetchStart).toFixed(2)
-        console.log(`[Dashboard] ✅ Todos os fetches completos!`)
-        console.log(`[Dashboard] ⏱️ Tempo total de fetch: ${totalTime}ms`)
-        console.log(`[Dashboard] 📈 Total de respostas carregadas: ${allResps.length}`)
+        console.log(`[Dashboard] ✅ Fetch completo! Tempo: ${totalTime}ms | Respostas: ${allResps.length}`)
 
         setAllResponses(allResps)
       } catch (err) {
@@ -74,7 +73,8 @@ export default function DashboardPage() {
     }
   }, [surveys])
 
-  const activeSurveys = surveys.filter(s => s.status === SurveyStatus.PUBLISHED).length
+  const publishedSurveys = surveys.filter(s => s.status === SurveyStatus.PUBLISHED)
+  const activeSurveys = publishedSurveys.filter(s => isSurveyActive(s.dataFim)).length
   const totalSurveys = surveys.length
   const totalResponses = allResponses.length
   const uniqueParticipants = new Set(allResponses.map(r => r.userId)).size
@@ -131,10 +131,7 @@ export default function DashboardPage() {
 
         <div className="px-6 py-6 space-y-6 pb-24">
           {/* Metrics Grid 2x2 */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <div>
             <div className="grid grid-cols-2 gap-3.5">
             {/* Total de pesquisas */}
             <Card className="p-5">
@@ -192,14 +189,10 @@ export default function DashboardPage() {
               </div>
             </Card>
             </div>
-          </motion.div>
+          </div>
 
           {/* Active Surveys */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
+          <div>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold text-gray-900">📊 Pesquisas Ativas</h2>
@@ -221,12 +214,7 @@ export default function DashboardPage() {
                     const surveyResponses = allResponses.filter(r => r.surveyId === survey.surveyId)
 
                     return (
-                      <motion.div
-                        key={survey.surveyId}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                      >
+                      <div key={survey.surveyId}>
                         <Link href={`/surveys/${survey.surveyId}`}>
                           <Card className="p-4 hover:shadow-lg transition-all cursor-pointer">
                             <div className="flex gap-4 items-start">
@@ -243,21 +231,17 @@ export default function DashboardPage() {
                             </div>
                           </Card>
                         </Link>
-                      </motion.div>
+                      </div>
                     )
                   })}
                 </div>
               )
             })()}
             </div>
-          </motion.div>
+          </div>
 
           {/* Inactive Surveys */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+          <div>
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-gray-900">🗂️ Pesquisas Encerradas</h2>
 
@@ -274,12 +258,7 @@ export default function DashboardPage() {
                     const surveyResponses = allResponses.filter(r => r.surveyId === survey.surveyId)
 
                     return (
-                      <motion.div
-                        key={survey.surveyId}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                      >
+                      <div key={survey.surveyId}>
                         <Link href={`/surveys/${survey.surveyId}`}>
                           <Card className="p-4 hover:shadow-lg transition-all cursor-pointer opacity-75">
                             <div className="flex gap-4 items-start">
@@ -296,14 +275,14 @@ export default function DashboardPage() {
                             </div>
                           </Card>
                         </Link>
-                      </motion.div>
+                      </div>
                     )
                   })}
                 </div>
               )
             })()}
             </div>
-          </motion.div>
+          </div>
         </div>
       </Container>
       <BottomNav />
