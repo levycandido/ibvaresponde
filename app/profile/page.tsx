@@ -9,21 +9,34 @@ import { Container } from '@/components/layout/container'
 import { BottomNav } from '@/components/layout/bottom-nav'
 import { Card, CardBody, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { mockCurrentUser } from '@/mocks/data'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 
 export default function ProfilePage() {
   const router = useRouter()
+  const { user, logout } = useCurrentUser()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
   const handleLogout = async () => {
     setIsLoggingOut(true)
     try {
-      // TODO: Implementar logout com Cognito
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      logout()
+      await new Promise(resolve => setTimeout(resolve, 500))
       router.push('/login')
     } finally {
       setIsLoggingOut(false)
     }
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Container withBottomNav>
+          <div className="text-center">
+            <p className="text-text-muted">Carregando perfil...</p>
+          </div>
+        </Container>
+      </div>
+    )
   }
 
   return (
@@ -46,13 +59,13 @@ export default function ProfilePage() {
               <CardBody className="flex items-center gap-4">
                 <div
                   className="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold"
-                  style={{ backgroundColor: mockCurrentUser.cor }}
+                  style={{ backgroundColor: user.cor }}
                 >
-                  {mockCurrentUser.nome.charAt(0).toUpperCase()}
+                  {user.nome.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-2xl font-bold text-gray-900">{mockCurrentUser.nome}</h2>
-                  <p className="text-sm text-gray-600 mt-1">{mockCurrentUser.email}</p>
+                  <h2 className="text-2xl font-bold text-gray-900">{user.nome}</h2>
+                  <p className="text-sm text-gray-600 mt-1">{user.email}</p>
                 </div>
               </CardBody>
             </Card>
@@ -77,7 +90,7 @@ export default function ProfilePage() {
                 <div className="flex items-start justify-between pb-4 border-b border-gray-100">
                   <div>
                     <p className="text-sm text-gray-600 font-medium">Email</p>
-                    <p className="text-gray-900 mt-1">{mockCurrentUser.email}</p>
+                    <p className="text-gray-900 mt-1">{user.email}</p>
                   </div>
                   <Mail size={18} className="text-gray-400 mt-1" />
                 </div>
@@ -85,28 +98,17 @@ export default function ProfilePage() {
                 <div className="flex items-start justify-between pb-4 border-b border-gray-100">
                   <div>
                     <p className="text-sm text-gray-600 font-medium">ID do Usuário</p>
-                    <p className="text-gray-900 text-sm mt-1 font-mono">{mockCurrentUser.userId}</p>
+                    <p className="text-gray-900 text-sm mt-1 font-mono">{user?.id}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start justify-between pb-4 border-b border-gray-100">
                   <div>
-                    <p className="text-sm text-gray-600 font-medium">Status</p>
-                    <span className={`text-sm font-medium px-3 py-1 rounded-full mt-1 inline-block ${
-                      mockCurrentUser.status === 'ACTIVE'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {mockCurrentUser.status === 'ACTIVE' ? 'Ativo' : 'Desativado'}
+                    <p className="text-sm text-gray-600 font-medium">Provedor</p>
+                    <span className="text-sm font-medium px-3 py-1 rounded-full mt-1 inline-block bg-blue-100 text-blue-800">
+                      {user?.provider === 'google' ? 'Google' : user?.provider === 'outlook' ? 'Outlook' : user?.provider}
                     </span>
                   </div>
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-600 font-medium">Último Acesso</p>
-                  <p className="text-gray-900 mt-1">
-                    {new Date(mockCurrentUser.lastLoginAt).toLocaleString('pt-BR')}
-                  </p>
                 </div>
               </CardBody>
             </Card>
@@ -129,7 +131,7 @@ export default function ProfilePage() {
               </CardHeader>
               <CardBody>
                 <div className="flex flex-wrap gap-2">
-                  {mockCurrentUser.roles.map(role => (
+                  {user.roles.map(role => (
                     <span
                       key={role}
                       className="px-3 py-1.5 bg-primary text-white text-sm font-medium rounded-full"
