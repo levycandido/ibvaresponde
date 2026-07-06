@@ -4,7 +4,9 @@ import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Container } from '@/components/layout/container'
-import { AlertCircle, X, Users, Shield } from 'lucide-react'
+import { AlertCircle, X, Shield } from 'lucide-react'
+import Image from 'next/image'
+import ibvaLogo from '@/imagens/ibvaLoginMobile.png'
 
 function LoginContent() {
   const searchParams = useSearchParams()
@@ -75,8 +77,15 @@ function LoginContent() {
               transition={{ delay: 0.1, duration: 0.4 }}
               className="mb-6"
             >
-              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-primary/15 to-primary-accent/10 rounded-3xl flex items-center justify-center">
-                <Users size={40} className="text-primary stroke-2" />
+              <div className="w-28 h-28 mx-auto relative">
+                <Image
+                  src={ibvaLogo}
+                  alt="IBVA Responde Logo"
+                  width={112}
+                  height={112}
+                  priority
+                  className="w-full h-full object-contain"
+                />
               </div>
             </motion.div>
 
