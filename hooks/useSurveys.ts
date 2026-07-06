@@ -27,7 +27,7 @@ export function useSurveys(): UseSurveysState {
       setError(error)
       console.error('Erro ao buscar pesquisas:', error)
     } finally {
-      if (showLoading) setLoading(false)
+      setLoading(false)
     }
   }
 
