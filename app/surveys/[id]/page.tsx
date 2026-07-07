@@ -150,6 +150,12 @@ export default function SurveyDetailPage() {
   }
 
   const validateRequiredQuestions = (): string | null => {
+    // Check if at least one frequencia record exists
+    const frequenciaRecords = frequencia.filter(f => f.nome.trim() !== '')
+    if (frequenciaRecords.length === 0) {
+      return 'Por favor, adicione pelo menos 1 participante na aba Frequência'
+    }
+
     const requiredQuestions = (survey.perguntas || []).filter(q => q.obrigatoria)
     for (const question of requiredQuestions) {
       const response = responses[question.questionId]
