@@ -50,29 +50,30 @@ export const surveyService = {
   async submitSurvey(
     surveyId: string,
     userId: string,
-    surveyResponses: Array<{
-      surveyResponseId: string
-      surveyId: string
-      userId: string
-      questionId: string
-      questionOrder: number
-      optionId: string
-      optionOrder: number
-      submittedAt: string
-    }>,
-    frequencia?: Array<{
-      nome: string
-      idade: string
-      membro: boolean
-      visitante: boolean
-    }>
+    payload: {
+      data: Array<{
+        surveyResponseId: string
+        surveyId: string
+        userId: string
+        questionId: string
+        questionOrder: number
+        optionId: string
+        optionOrder: number
+        submittedAt: string
+      }>
+      frequencia: Array<{
+        nome: string
+        idade: string
+        membro: boolean
+        visitante: boolean
+      }>
+    }
   ): Promise<void> {
     try {
-      const payload = {
-        responses: surveyResponses,
-        ...(frequencia && frequencia.length > 0 && { frequencia }),
+      const requestPayload = {
+        responses: payload,
       }
-      await api.post(`/surveys/${surveyId}/responses`, payload)
+      await api.post(`/surveys/${surveyId}/responses`, requestPayload)
     } catch (error) {
       console.error('Erro ao enviar pesquisa:', error)
       throw error

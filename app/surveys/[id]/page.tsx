@@ -206,7 +206,13 @@ export default function SurveyDetailPage() {
       // Filter out empty frequencia records
       const frequenciaData = frequencia.filter(f => f.nome.trim() !== '')
 
-      await surveyService.submitSurvey(surveyId, userId, surveyResponses, frequenciaData)
+      // Build payload with frequencia inside responses
+      const payload = {
+        data: surveyResponses,
+        frequencia: frequenciaData,
+      }
+
+      await surveyService.submitSurvey(surveyId, userId, payload)
       setIsSubmitted(true)
 
       setTimeout(() => {
