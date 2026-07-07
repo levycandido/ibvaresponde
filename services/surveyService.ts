@@ -60,6 +60,7 @@ export const surveyService = {
         optionId: string
         optionOrder: number
         submittedAt: string
+        data: string
       }>
       frequencias: Array<{
         nome: string

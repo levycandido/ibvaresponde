@@ -199,6 +199,7 @@ export default function SurveyDetailPage() {
               optionId,
               optionOrder: option?.ordem || 0,
               submittedAt,
+              data: submittedAt,
             }
           })
         })

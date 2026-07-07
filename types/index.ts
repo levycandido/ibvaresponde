@@ -76,6 +76,7 @@ export interface SurveyResponse {
   userId: string
   option: string | string[]
   submittedAt: string
+  data: string
 }
 
 export interface FrequenciaRecord {
