@@ -78,6 +78,13 @@ export interface SurveyResponse {
   submittedAt: string
 }
 
+export interface FrequenciaRecord {
+  nome: string
+  idade: string
+  membro: boolean
+  visitante: boolean
+}
+
 export interface DashboardData {
   respostas: SurveyResponse[]
   pesquisas: Survey[]

@@ -8,13 +8,23 @@ import { Header } from '@/components/layout/header'
 import { Container } from '@/components/layout/container'
 import { Button } from '@/components/ui/button'
 import { QuestionRenderer } from '@/components/questions/question-renderer'
+import { FrequenciaTab } from '@/components/questions/frequencia-tab'
 import { useSurvey } from '@/hooks/useSurveys'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { surveyService } from '@/services/surveyService'
 import { isSurveyActive } from '@/utils/surveyStatus'
+import { FrequenciaRecord } from '@/types'
 import Link from 'next/link'
 import { v4 as uuidv4 } from 'uuid'
 import { useEffect } from 'react'
+
+const INITIAL_FREQUENCIA: FrequenciaRecord[] = Array.from({ length: 10 }, () => ({
+  nome: '',
+  idade: '',
+  membro: false,
+  visitante: false,
+}))
+
 export default function SurveyDetailPage() {
   const params = useParams()
   const { user } = useCurrentUser()
@@ -24,6 +34,8 @@ export default function SurveyDetailPage() {
 
   const { survey, loading, error } = useSurvey(surveyId)
   const [responses, setResponses] = useState<Record<string, string | string[]>>({})
+  const [frequencia, setFrequencia] = useState<FrequenciaRecord[]>(INITIAL_FREQUENCIA)
+  const [activeTab, setActiveTab] = useState<'frequencia' | 'perguntas'>('frequencia')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [validationError, setValidationError] = useState('')
@@ -185,7 +197,10 @@ export default function SurveyDetailPage() {
           })
         })
 
-      await surveyService.submitSurvey(surveyId, userId, surveyResponses)
+      // Filter out empty frequencia records
+      const frequenciaData = frequencia.filter(f => f.nome.trim() !== '')
+
+      await surveyService.submitSurvey(surveyId, userId, surveyResponses, frequenciaData)
       setIsSubmitted(true)
 
       setTimeout(() => {
@@ -274,92 +289,137 @@ export default function SurveyDetailPage() {
           </motion.div>
         )}
 
-        {/* Progress Card */}
+        {/* Tabs */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
+          className="mb-8"
         >
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Progresso da Pesquisa</p>
-                <p className="text-3xl font-bold text-blue-600 mt-1">{answeredCount}/{totalQuestions}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-2xl font-bold text-indigo-600">{Math.round(progressPercentage)}%</p>
-                <p className="text-xs text-gray-500 mt-1">completo</p>
-              </div>
-            </div>
-
-            <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${progressPercentage}%` }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                style={{ height: '100%', background: 'linear-gradient(to right, rgb(59, 130, 246), rgb(99, 102, 241))' }}
-              />
-            </div>
+          <div className="flex gap-2 border-b border-gray-200">
+            <button
+              onClick={() => setActiveTab('frequencia')}
+              className={`px-6 py-3 font-semibold border-b-2 transition-colors ${
+                activeTab === 'frequencia'
+                  ? 'text-blue-600 border-blue-600'
+                  : 'text-gray-600 border-transparent hover:text-gray-900'
+              }`}
+            >
+              Frequência
+            </button>
+            <button
+              onClick={() => setActiveTab('perguntas')}
+              className={`px-6 py-3 font-semibold border-b-2 transition-colors ${
+                activeTab === 'perguntas'
+                  ? 'text-blue-600 border-blue-600'
+                  : 'text-gray-600 border-transparent hover:text-gray-900'
+              }`}
+            >
+              Perguntas ({answeredCount}/{totalQuestions})
+            </button>
           </div>
         </motion.div>
 
-        {/* Questions */}
-        <form onSubmit={handleSubmit} className="space-y-4 pb-24">
+        {/* Progress Card (only show on perguntas tab) */}
+        {activeTab === 'perguntas' && (
           <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.08,
-                  delayChildren: 0.2,
-                },
-              },
-            }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
           >
-            <div className="space-y-4">
-              {(survey?.perguntas || []).map((question, index) => {
-              const isAnswered = !!responses[question.questionId]
-              const isRequired = question.obrigatoria
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Progresso da Pesquisa</p>
+                  <p className="text-3xl font-bold text-blue-600 mt-1">{answeredCount}/{totalQuestions}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-2xl font-bold text-indigo-600">{Math.round(progressPercentage)}%</p>
+                  <p className="text-xs text-gray-500 mt-1">completo</p>
+                </div>
+              </div>
 
-              return (
+              <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
                 <motion.div
-                  key={question.questionId}
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-                  }}
-                >
-                  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all overflow-hidden">
-                    {/* Question Header */}
-                    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5 flex items-center justify-between gap-3">
-                      <p className="text-lg font-bold text-white flex-1">{question.descricao}</p>
-                      {isAnswered && (
-                        <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                          <span className="text-white font-bold">✓</span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Question Body */}
-                    <div className="p-6">
-                      <QuestionRenderer
-                        question={question}
-                        value={responses[question.questionId] || (question.tipo === 'CHECKBOX' ? [] : '')}
-                        onChange={(value) => {
-                          setResponses(prev => ({ ...prev, [question.questionId]: value }))
-                          setValidationError('')
-                        }}
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              )
-              })}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progressPercentage}%` }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  style={{ height: '100%', background: 'linear-gradient(to right, rgb(59, 130, 246), rgb(99, 102, 241))' }}
+                />
+              </div>
             </div>
           </motion.div>
+        )}
+
+        {/* Tab Content */}
+        <form onSubmit={handleSubmit} className="space-y-4 pb-24">
+          {activeTab === 'frequencia' && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6"
+            >
+              <FrequenciaTab frequencia={frequencia} onChange={setFrequencia} />
+            </motion.div>
+          )}
+
+          {activeTab === 'perguntas' && (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.08,
+                    delayChildren: 0.2,
+                  },
+                },
+              }}
+            >
+              <div className="space-y-4">
+                {(survey?.perguntas || []).map((question, index) => {
+                const isAnswered = !!responses[question.questionId]
+                const isRequired = question.obrigatoria
+
+                return (
+                  <motion.div
+                    key={question.questionId}
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+                    }}
+                  >
+                    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all overflow-hidden">
+                      {/* Question Header */}
+                      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5 flex items-center justify-between gap-3">
+                        <p className="text-lg font-bold text-white flex-1">{question.descricao}</p>
+                        {isAnswered && (
+                          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                            <span className="text-white font-bold">✓</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Question Body */}
+                      <div className="p-6">
+                        <QuestionRenderer
+                          question={question}
+                          value={responses[question.questionId] || (question.tipo === 'CHECKBOX' ? [] : '')}
+                          onChange={(value) => {
+                            setResponses(prev => ({ ...prev, [question.questionId]: value }))
+                            setValidationError('')
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                )
+                })}
+              </div>
+            </motion.div>
+          )}
 
           {/* Submit Button */}
           <motion.div

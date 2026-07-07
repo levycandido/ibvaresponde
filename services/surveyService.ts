@@ -59,10 +59,20 @@ export const surveyService = {
       optionId: string
       optionOrder: number
       submittedAt: string
+    }>,
+    frequencia?: Array<{
+      nome: string
+      idade: string
+      membro: boolean
+      visitante: boolean
     }>
   ): Promise<void> {
     try {
-      await api.post(`/surveys/${surveyId}/responses`, surveyResponses)
+      const payload = {
+        responses: surveyResponses,
+        ...(frequencia && frequencia.length > 0 && { frequencia }),
+      }
+      await api.post(`/surveys/${surveyId}/responses`, payload)
     } catch (error) {
       console.error('Erro ao enviar pesquisa:', error)
       throw error
