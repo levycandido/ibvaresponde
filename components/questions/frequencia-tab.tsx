@@ -54,14 +54,9 @@ export function FrequenciaTab({ frequencia, onChange }: FrequenciaTabProps) {
             transition={{ duration: 0.3, delay: index * 0.05 }}
             className="bg-white border border-gray-100 rounded-xl p-5 hover:shadow-md transition-all duration-300 hover:border-blue-200"
           >
-            {/* Row Number and Delete */}
+            {/* Number and Delete Button */}
             <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold">
-                  {String(index + 1).padStart(2, '0')}
-                </div>
-                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Participante</span>
-              </div>
+              <span className="text-2xl font-bold text-gray-300">{String(index + 1).padStart(2, '0')}</span>
               {record.nome && (
                 <button
                   onClick={() => handleDeleteRow(index)}
