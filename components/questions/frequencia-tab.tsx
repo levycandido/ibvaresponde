@@ -55,8 +55,7 @@ export function FrequenciaTab({ frequencia, onChange }: FrequenciaTabProps) {
             className="bg-white border border-gray-100 rounded-xl p-5 hover:shadow-md transition-all duration-300 hover:border-blue-200"
           >
             {/* Number and Delete Button */}
-            <div className="flex items-start justify-between mb-4">
-              <span className="text-2xl font-bold text-gray-300">{String(index + 1).padStart(2, '0')}</span>
+            <div className="flex items-start justify-end gap-3 mb-4">
               {record.nome && (
                 <button
                   onClick={() => handleDeleteRow(index)}
@@ -66,6 +65,7 @@ export function FrequenciaTab({ frequencia, onChange }: FrequenciaTabProps) {
                   <Trash2 size={18} />
                 </button>
               )}
+              <span className="text-2xl font-bold text-gray-300">{String(index + 1).padStart(2, '0')}</span>
             </div>
 
             {/* Nome e Idade - Same Row */}
