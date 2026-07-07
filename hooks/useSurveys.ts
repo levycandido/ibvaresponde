@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Survey } from '@/types'
 import { surveyService } from '@/services/surveyService'
 
@@ -92,6 +92,7 @@ export function useSurvey(surveyId: string): UseSurveyState {
   const [survey, setSurvey] = useState<Survey | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
+  const fetchedSurveyIdRef = useRef<string | null>(null)
 
   const fetchSurvey = async (showLoading = true) => {
     try {
@@ -99,6 +100,7 @@ export function useSurvey(surveyId: string): UseSurveyState {
       setError(null)
       const data = await surveyService.getSurveyById(surveyId)
       setSurvey(data)
+      fetchedSurveyIdRef.current = surveyId
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Erro desconhecido')
       setError(error)
@@ -109,7 +111,8 @@ export function useSurvey(surveyId: string): UseSurveyState {
   }
 
   useEffect(() => {
-    if (surveyId) {
+    // Only fetch if surveyId changed
+    if (surveyId && fetchedSurveyIdRef.current !== surveyId) {
       fetchSurvey(true)
     }
   }, [surveyId])
