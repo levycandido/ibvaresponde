@@ -61,7 +61,7 @@ export const surveyService = {
         optionOrder: number
         submittedAt: string
       }>
-      frequencia: Array<{
+      frequencias: Array<{
         nome: string
         idade: string
         membro: boolean
