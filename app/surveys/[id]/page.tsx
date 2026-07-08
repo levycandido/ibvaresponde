@@ -213,6 +213,7 @@ export default function SurveyDetailPage() {
         frequencias: frequenciaData,
       }
 
+      console.log('[Survey] Payload antes de enviar:', JSON.stringify(payload, null, 2))
       await surveyService.submitSurvey(surveyId, userId, payload)
       setIsSubmitted(true)
 
