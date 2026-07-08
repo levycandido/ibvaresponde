@@ -156,6 +156,15 @@ export const surveyService = {
       }
       textAnswer: string | null
     }>
+    frequencias?: Array<{
+      frequenciaId: string
+      surveyId: string
+      nome: string
+      idade: string
+      membro: boolean
+      visitante: boolean
+      data: string
+    }>
   }> {
     try {
       const response = await api.get(`/surveys/${surveyId}/responses`)
