@@ -123,6 +123,7 @@ export const mockResponses: SurveyResponse[] = [
     questionId: 'q1',
     option: 'op1',
     submittedAt: '2026-06-20T14:30:00Z',
+    data: '2026-06-20',
   },
   {
     surveyResponseId: 'resp-2',
@@ -131,6 +132,7 @@ export const mockResponses: SurveyResponse[] = [
     questionId: 'q2',
     option: JSON.stringify(['op6', 'op7']),
     submittedAt: '2026-06-20T14:30:00Z',
+    data: '2026-06-20',
   },
   {
     surveyResponseId: 'resp-3',
@@ -139,6 +141,7 @@ export const mockResponses: SurveyResponse[] = [
     questionId: 'q1',
     option: 'op2',
     submittedAt: '2026-06-21T10:15:00Z',
+    data: '2026-06-21',
   },
   {
     surveyResponseId: 'resp-4',
@@ -147,5 +150,6 @@ export const mockResponses: SurveyResponse[] = [
     questionId: 'q4',
     option: 'op10',
     submittedAt: '2026-06-22T16:45:00Z',
+    data: '2026-06-22',
   },
 ]

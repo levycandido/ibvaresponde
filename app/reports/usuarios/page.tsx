@@ -29,6 +29,7 @@ interface DateGroup {
 export default function UserResponsesPage() {
   const { surveys, loading: surveysLoading } = useSurveys()
   const [allResponses, setAllResponses] = useState<any[]>([])
+  const [allFrequencias, setAllFrequencias] = useState<any[]>([])
   const [loadingResponses, setLoadingResponses] = useState(true)
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
@@ -38,6 +39,7 @@ export default function UserResponsesPage() {
       try {
         setLoadingResponses(true)
         let allResps: any[] = []
+        let allFreqs: any[] = []
 
         for (const survey of surveys) {
           try {
@@ -48,12 +50,21 @@ export default function UserResponsesPage() {
                 surveyTitle: survey.titulo,
               }))]
             }
+            // Capturar frequências do nível superior
+            if (response.frequencias && Array.isArray(response.frequencias)) {
+              allFreqs = [...allFreqs, ...response.frequencias.map(f => ({
+                ...f,
+                surveyTitle: survey.titulo,
+              }))]
+            }
           } catch (err) {
             console.error(`Erro ao buscar respostas de ${survey.surveyId}:`, err)
           }
         }
 
         setAllResponses(allResps)
+        setAllFrequencias(allFreqs)
+        console.log('[UserReports] Frequências carregadas:', allFreqs.length, allFreqs)
       } catch (err) {
         console.error('Erro ao buscar respostas:', err)
       } finally {
@@ -71,6 +82,20 @@ export default function UserResponsesPage() {
   const selectedUser = selectedUserId ? { id: selectedUserId, name: USERS_MAP[selectedUserId] || selectedUserId } : null
   const userResponses = selectedUserId ? allResponses.filter(r => r.userId === selectedUserId) : []
 
+  // Debug: log state
+  console.log('[UserReports] Estado:', {
+    selectedUserId,
+    selectedDate,
+    totalRespostas: userResponses.length,
+    totalAllRespostas: allResponses.length,
+  })
+
+  // Debug: log JSON completo de todas as respostas
+  if (allResponses.length > 0) {
+    console.log('[UserReports] JSON COMPLETO DE TODAS AS RESPOSTAS:', JSON.stringify(allResponses, null, 2))
+    console.log('[UserReports] Primeiro response:', allResponses[0])
+  }
+
   // Agrupar por data
   const dateGroups: { [key: string]: DateGroup } = {}
   userResponses.forEach(response => {
@@ -85,6 +110,33 @@ export default function UserResponsesPage() {
       }
     }
     dateGroups[dateKey].responses.push(response)
+  })
+
+  // Agrupar frequências por data e usuário
+  if (selectedUserId && allFrequencias.length > 0) {
+    Object.keys(dateGroups).forEach(dateKey => {
+      // Filtrar frequências pela data
+      const freqsForDate = allFrequencias.filter(freq => {
+        const freqDate = freq.data || freq.submittedAt
+        return freqDate === dateKey
+      })
+
+      // Evitar duplicatas baseado no frequenciaId
+      const uniqueFreqs = freqsForDate.reduce((acc, freq) => {
+        if (!acc.find(f => f.frequenciaId === freq.frequenciaId)) {
+          acc.push(freq)
+        }
+        return acc
+      }, [] as any[])
+
+      dateGroups[dateKey].frequencias = uniqueFreqs
+      console.log(`[UserReports] Data ${dateKey}: ${uniqueFreqs.length} frequências`)
+    })
+  }
+
+  console.log('[UserReports] Agrupamento final:', {
+    totalDatas: Object.keys(dateGroups).length,
+    primeiraData: dateGroups[Object.keys(dateGroups)[0]],
   })
 
   // Debug log
@@ -102,6 +154,16 @@ export default function UserResponsesPage() {
   })
 
   const selectedDateGroup = selectedDate ? dateGroups[selectedDate] : null
+
+  // Debug: log da data selecionada e frequências
+  if (selectedDate && selectedDateGroup) {
+    console.log('[UserReports] Data selecionada:', {
+      selectedDate,
+      totalFrequencias: selectedDateGroup.frequencias?.length || 0,
+      frequencias: selectedDateGroup.frequencias,
+      totalRespostas: selectedDateGroup.responses?.length || 0,
+    })
+  }
 
   if (isLoading) {
     return (
@@ -255,31 +317,43 @@ export default function UserResponsesPage() {
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
               <div className="space-y-8">
                 {/* Frequências */}
-                {selectedDateGroup?.responses.length > 0 && (
+                {selectedDateGroup?.frequencias && selectedDateGroup.frequencias.length > 0 && (
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900 mb-4">👥 Frequência</h2>
-                    <Card className="p-6 bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {selectedDateGroup?.responses
-                          ?.filter((r, i, arr) => arr.findIndex(x => x.userName === r.userName) === i)
-                          .map((response, idx) => (
-                            <div
-                              key={idx}
-                              className="bg-white rounded-lg p-4 border border-emerald-100 flex items-center gap-3"
-                            >
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold flex-shrink-0">
-                                {response.usuario?.nome?.charAt(0).toUpperCase() || '?'}
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="font-semibold text-gray-900 text-sm line-clamp-1">
-                                  {response.usuario?.nome || response.userName}
-                                </p>
-                                <p className="text-xs text-text-muted">
-                                  {response.usuario?.email || 'Sem email'}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
+                    <Card className="p-0 overflow-hidden border border-gray-200">
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead className="bg-gray-100 border-b border-gray-200">
+                            <tr>
+                              <th className="px-4 py-3 text-left text-sm font-bold text-gray-900 w-12">Nº</th>
+                              <th className="px-4 py-3 text-left text-sm font-bold text-gray-900 flex-1">Nome</th>
+                              <th className="px-4 py-3 text-left text-sm font-bold text-gray-900 w-20">Idade</th>
+                              <th className="px-4 py-3 text-center text-sm font-bold text-gray-900 w-24">Membro</th>
+                              <th className="px-4 py-3 text-center text-sm font-bold text-gray-900 w-24">Visitante</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {selectedDateGroup.frequencias.map((freq, idx) => (
+                              <tr key={freq.frequenciaId} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                <td className="px-4 py-3 text-sm font-semibold text-gray-900">
+                                  {String(idx + 1).padStart(2, '0')}
+                                </td>
+                                <td className="px-4 py-3 text-sm text-gray-900 font-medium">
+                                  {freq.nome || 'Sem nome'}
+                                </td>
+                                <td className="px-4 py-3 text-sm text-gray-900">
+                                  {freq.idade || '-'}
+                                </td>
+                                <td className="px-4 py-3 text-sm text-center text-gray-900 font-semibold">
+                                  {freq.membro ? 'SIM' : 'NÃO'}
+                                </td>
+                                <td className="px-4 py-3 text-sm text-center text-gray-900 font-semibold">
+                                  {freq.visitante ? 'SIM' : 'NÃO'}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     </Card>
                   </div>

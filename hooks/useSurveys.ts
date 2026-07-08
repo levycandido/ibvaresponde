@@ -65,7 +65,7 @@ export function usePublishedSurveys(): UseSurveysState {
       setError(error)
       console.error('Erro ao buscar pesquisas publicadas:', error)
     } finally {
-      if (showLoading) setLoading(false)
+      setLoading(false)
     }
   }
 
