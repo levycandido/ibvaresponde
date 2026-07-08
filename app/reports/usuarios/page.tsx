@@ -87,6 +87,15 @@ export default function UserResponsesPage() {
     dateGroups[dateKey].responses.push(response)
   })
 
+  // Debug log
+  if (selectedUserId && userResponses.length > 0) {
+    console.log('[UserReports] Agrupamento por data:', {
+      totalRespostas: userResponses.length,
+      datas: Object.keys(dateGroups),
+      primeiraResposta: userResponses[0],
+    })
+  }
+
   // Ordenar datas (maior para menor)
   const sortedDates = Object.keys(dateGroups).sort((a, b) => {
     return new Date(b).getTime() - new Date(a).getTime()
