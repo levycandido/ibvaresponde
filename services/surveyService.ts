@@ -103,7 +103,14 @@ export const surveyService = {
     }>
   }): Promise<Survey> {
     try {
-      const response = await api.post<Survey>('/surveys', payload)
+      const payloadWithResponses = {
+        ...payload,
+        responses: {
+          data: [],
+          frequencias: []
+        }
+      }
+      const response = await api.post<Survey>('/surveys', payloadWithResponses)
       return response
     } catch (error) {
       console.error('Erro ao criar pesquisa:', error)

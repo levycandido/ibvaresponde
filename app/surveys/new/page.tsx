@@ -225,7 +225,16 @@ export default function NewSurveyPage() {
         router.push('/surveys')
       }, 2000)
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Erro ao criar pesquisa'
+      let errorMsg = error instanceof Error ? error.message : 'Erro ao criar pesquisa'
+
+      if (errorMsg.includes('responses.data deve ser uma lista')) {
+        errorMsg = 'Erro no servidor: validação de respostas incorreta. Por favor, contacte o suporte.'
+      } else if (errorMsg.includes('AccessDeniedException')) {
+        errorMsg = 'Erro no servidor: permissões insuficientes no banco de dados. Por favor, contacte o suporte.'
+      } else if (errorMsg.includes('surveyId')) {
+        errorMsg = 'Erro no servidor: problema ao processar dados de resposta. Por favor, contacte o suporte.'
+      }
+
       setErrorMessage(errorMsg)
       setIsSubmitting(false)
     }
