@@ -11,6 +11,7 @@ import { useSurveys } from '@/hooks/useSurveys'
 import { surveyService } from '@/services/surveyService'
 import { SurveyStatus } from '@/types'
 import Link from 'next/link'
+import { Home } from 'lucide-react'
 
 interface AnswerCount {
   [key: string]: number
@@ -113,6 +114,20 @@ export default function ReportsPage() {
                     <div>
                       <p className="text-sm font-bold text-gray-900">Por Usuário</p>
                       <p className="text-xs text-text-muted">Respostas por pessoa</p>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+
+              <Link href="/reports/salas">
+                <Card className="p-4 hover:shadow-lg transition-all cursor-pointer border-2 border-border-light hover:border-primary/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600">
+                      <Home size={20} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-gray-900">Por Sala</p>
+                      <p className="text-xs text-text-muted">Pesquisas por sala e data</p>
                     </div>
                   </div>
                 </Card>
