@@ -148,6 +148,7 @@ export const surveyService = {
       questionId: string
       optionId: string
       submittedAt: string
+      roomId?: string
       pesquisa: Survey
       pergunta: {
         questionId: string

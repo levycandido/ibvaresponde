@@ -9,8 +9,6 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useSurveys } from '@/hooks/useSurveys'
 import { surveyService } from '@/services/surveyService'
-import { SurveyStatus } from '@/types'
-import Link from 'next/link'
 
 interface SalaData {
   sala: string
@@ -49,30 +47,30 @@ export default function ReportsByRoomsPage() {
           try {
             const response = await surveyService.getSurveyResponses(survey.surveyId)
 
-            if (response.frequencias && Array.isArray(response.frequencias)) {
-              response.frequencias.forEach((freq: any) => {
-                const sala = freq.nome || 'Sem Sala'
+            if (response.respostas && Array.isArray(response.respostas)) {
+              response.respostas.forEach((resposta: any) => {
+                const roomId = resposta.roomId || 'Sem Sala'
 
-                if (!salasMap[sala]) {
-                  salasMap[sala] = {
-                    sala,
+                if (!salasMap[roomId]) {
+                  salasMap[roomId] = {
+                    sala: roomId,
                     respondentes: 0,
                     datas: []
                   }
                 }
 
-                const frequenciaData = freq.data ? new Date(freq.data) : new Date()
-                const dateStr = frequenciaData.toISOString().split('T')[0]
-                const formattedDate = frequenciaData.toLocaleDateString('pt-BR')
+                const respostaData = resposta.submittedAt ? new Date(resposta.submittedAt) : new Date()
+                const dateStr = respostaData.toISOString().split('T')[0]
+                const formattedDate = respostaData.toLocaleDateString('pt-BR')
 
-                let dateData = salasMap[sala].datas.find(d => d.date === dateStr)
+                let dateData = salasMap[roomId].datas.find(d => d.date === dateStr)
                 if (!dateData) {
                   dateData = {
                     date: dateStr,
                     formattedDate,
                     pesquisas: []
                   }
-                  salasMap[sala].datas.push(dateData)
+                  salasMap[roomId].datas.push(dateData)
                 }
 
                 let pesquisaData = dateData.pesquisas.find(p => p.surveyId === survey.surveyId)
@@ -82,18 +80,19 @@ export default function ReportsByRoomsPage() {
                     surveyTitle: survey.titulo,
                     respondentes: [],
                     respondentesCount: 0,
-                    submittedAt: frequenciaData.toISOString()
+                    submittedAt: respostaData.toISOString()
                   }
                   dateData.pesquisas.push(pesquisaData)
                 }
 
-                if (!pesquisaData.respondentes.includes(freq.nome)) {
-                  pesquisaData.respondentes.push(freq.nome)
+                const respondentId = resposta.userId || 'Anônimo'
+                if (!pesquisaData.respondentes.includes(respondentId)) {
+                  pesquisaData.respondentes.push(respondentId)
                   pesquisaData.respondentesCount++
                 }
 
-                if (!salasMap[sala].datas[salasMap[sala].datas.indexOf(dateData)].pesquisas.some(p => p.respondentes.includes(freq.nome))) {
-                  salasMap[sala].respondentes++
+                if (!salasMap[roomId].datas[salasMap[roomId].datas.indexOf(dateData)].pesquisas.some(p => p.respondentes.includes(respondentId))) {
+                  salasMap[roomId].respondentes++
                 }
               })
             }
