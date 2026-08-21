@@ -9,8 +9,6 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useSurveys } from '@/hooks/useSurveys'
 import { surveyService } from '@/services/surveyService'
-import { SurveyStatus } from '@/types'
-import Link from 'next/link'
 
 const USERS_MAP: { [key: string]: string } = {
   'cf44bb30-147b-410b-b05b-75911e6c29f9': 'Leandro Silva',
@@ -371,9 +369,18 @@ export default function UserResponsesPage() {
                         transition={{ delay: idx * 0.05 }}
                       >
                         <Card className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
-                          <h3 className="text-lg font-bold text-gray-900 mb-3">
-                            {response.pergunta?.descricao || 'Pergunta sem título'}
-                          </h3>
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex-1">
+                              <h3 className="text-lg font-bold text-gray-900">
+                                {response.pergunta?.descricao || 'Pergunta sem título'}
+                              </h3>
+                            </div>
+                            {response.roomId && (
+                              <span className="ml-2 px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-semibold whitespace-nowrap">
+                                {response.roomId}
+                              </span>
+                            )}
+                          </div>
                           <div className="bg-white rounded-lg p-4 border border-blue-100">
                             <p className="text-base font-semibold text-gray-900">
                               {response.respostaSelecionada?.descricao || response.textAnswer || 'Sem resposta'}

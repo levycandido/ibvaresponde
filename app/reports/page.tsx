@@ -303,32 +303,41 @@ export default function ReportsPage() {
 
                         {(() => {
                           const totalQuestions = selectedSurvey?.perguntas?.length || 0
-                          const userResponses: { [userId: string]: Set<string> } = {}
+                          const userResponses: { [userId: string]: { questions: Set<string>, rooms: Set<string> } } = {}
 
                           surveyResponses.forEach(resp => {
                             if (!userResponses[resp.userId]) {
-                              userResponses[resp.userId] = new Set()
+                              userResponses[resp.userId] = { questions: new Set(), rooms: new Set() }
                             }
-                            userResponses[resp.userId].add(resp.questionId)
+                            userResponses[resp.userId].questions.add(resp.questionId)
+                            if (resp.roomId) {
+                              userResponses[resp.userId].rooms.add(resp.roomId)
+                            }
                           })
 
                           const completedUsers = Object.entries(userResponses)
-                            .filter(([, questions]) => questions.size === totalQuestions)
-                            .map(([userId]) => userId)
+                            .filter(([, data]) => data.questions.size === totalQuestions)
+                            .map(([userId, data]) => ({ userId, rooms: Array.from(data.rooms) }))
 
                           return (
                             <div className="flex flex-wrap gap-3">
                               {completedUsers.length === 0 ? (
                                 <p className="text-text-muted text-sm">Nenhum usuário respondeu todas as perguntas</p>
                               ) : (
-                                completedUsers.map((userId, idx) => (
-                                  <span
-                                    key={idx}
-                                    className="px-4 py-2 bg-success text-white rounded-lg text-sm font-bold flex items-center gap-2"
-                                  >
-                                    <span>✓</span>
-                                    {USERS_MAP[userId] || userId}
-                                  </span>
+                                completedUsers.map((user, idx) => (
+                                  <div key={idx} className="flex flex-col gap-1">
+                                    <span
+                                      className="px-4 py-2 bg-success text-white rounded-lg text-sm font-bold flex items-center gap-2"
+                                    >
+                                      <span>✓</span>
+                                      {USERS_MAP[user.userId] || user.userId}
+                                    </span>
+                                    {user.rooms.length > 0 && (
+                                      <span className="px-3 py-1 bg-info-soft text-info rounded text-xs font-medium">
+                                        {user.rooms.join(', ')}
+                                      </span>
+                                    )}
+                                  </div>
                                 ))
                               )}
                             </div>
