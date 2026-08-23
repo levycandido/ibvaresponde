@@ -35,6 +35,7 @@ export default function SurveyDetailPage() {
   const { survey, loading, error } = useSurvey(surveyId)
   const [responses, setResponses] = useState<Record<string, string | string[]>>({})
   const [frequencia, setFrequencia] = useState<FrequenciaRecord[]>(INITIAL_FREQUENCIA)
+  const [selectedRoom, setSelectedRoom] = useState('')
   const [activeTab, setActiveTab] = useState<'frequencia' | 'perguntas'>('frequencia')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -150,6 +151,11 @@ export default function SurveyDetailPage() {
   }
 
   const validateRequiredQuestions = (): string | null => {
+    // Check if room is selected
+    if (!selectedRoom.trim()) {
+      return 'Por favor, selecione a sala antes de continuar'
+    }
+
     // Check if at least one frequencia record exists
     const frequenciaRecords = frequencia.filter(f => f.nome.trim() !== '')
     if (frequenciaRecords.length === 0) {
@@ -200,6 +206,7 @@ export default function SurveyDetailPage() {
               optionOrder: option?.ordem || 0,
               submittedAt,
               data: submittedAt,
+              roomId: selectedRoom,
             }
           })
         })
@@ -302,6 +309,32 @@ export default function SurveyDetailPage() {
             </div>
           </motion.div>
         )}
+
+        {/* Room Selection */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="mb-6"
+        >
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <label className="block text-sm font-bold text-gray-700 mb-3">
+              📍 Selecione a Sala
+            </label>
+            <input
+              type="text"
+              value={selectedRoom}
+              onChange={(e) => setSelectedRoom(e.target.value)}
+              placeholder="Ex: Sala A, Sala 1, Classrooms, etc."
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+            />
+            {selectedRoom && (
+              <p className="mt-2 text-sm text-green-600 font-medium">
+                ✓ Sala selecionada: {selectedRoom}
+              </p>
+            )}
+          </div>
+        </motion.div>
 
         {/* Tabs */}
         <motion.div
