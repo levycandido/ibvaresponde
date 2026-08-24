@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import { FileText, Plus, AlertCircle, Loader, HelpCircle, CheckCircle2 } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -16,9 +16,14 @@ import { isSurveyActive } from '@/utils/surveyStatus'
 
 export default function SurveysPage() {
   const [filter, setFilter] = useState<'all' | 'active' | 'closed'>('active')
+  const [mounted, setMounted] = useState(false)
   const { surveys, loading, error, refetch } = usePublishedSurveys()
   const { user } = useCurrentUser()
   const isAdmin = user?.roles?.includes('admin') || user?.roles?.includes('ADMIN')
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const filteredSurveys = useMemo(() =>
     surveys.filter(survey => {
@@ -78,7 +83,7 @@ export default function SurveysPage() {
             </div>
 
             {/* Admin Button - Secondary Create Button */}
-            {isAdmin && (
+            {mounted && isAdmin && (
               <Link href="/surveys/new">
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -258,7 +263,7 @@ export default function SurveysPage() {
           )}
         </div>
         {/* Floating Action Button (FAB) for Admin */}
-        {isAdmin && (
+        {mounted && isAdmin && (
           <Link href="/surveys/new">
             <motion.button
               initial={{ scale: 0, opacity: 0 }}
