@@ -64,8 +64,8 @@ export default function DashboardPage() {
         <div className="bg-surface border-b border-border-light sticky top-0 z-10">
           <div className="px-6 py-6">
             <div className="flex items-start justify-between gap-4">
-              <div className="flex-1" suppressHydrationWarning>
-                <h1 className="text-4xl font-bold text-gray-900 leading-tight">
+              <div className="flex-1">
+                <h1 className="text-4xl font-bold text-gray-900 leading-tight" suppressHydrationWarning>
                   Olá, {user?.nome || 'Usuário'}! 👋
                 </h1>
                 <p className="text-text-muted mt-2">Resumo rápido das pesquisas da igreja.</p>
