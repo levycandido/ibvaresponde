@@ -21,6 +21,7 @@ export const surveyService = {
   async getSurveyById(surveyId: string): Promise<Survey> {
     try {
       const response = await api.get<Survey>(`/surveys/${surveyId}`)
+      console.log(`[surveyService] getSurveyById ${surveyId}:`, response)
       return response
     } catch (error) {
       console.error(`Erro ao buscar pesquisa ${surveyId}:`, error)
@@ -110,7 +111,9 @@ export const surveyService = {
           frequencias: []
         }
       }
+      console.log('[surveyService] createSurvey - payload enviado:', JSON.stringify(payloadWithResponses, null, 2))
       const response = await api.post<Survey>('/surveys', payloadWithResponses)
+      console.log('[surveyService] createSurvey - resposta recebida:', response)
       return response
     } catch (error) {
       console.error('Erro ao criar pesquisa:', error)
