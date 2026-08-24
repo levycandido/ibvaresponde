@@ -465,7 +465,7 @@ export default function SurveyDetailPage() {
                     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all overflow-hidden">
                       {/* Question Header */}
                       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5 flex items-center justify-between gap-3">
-                        <p className="text-lg font-bold text-white flex-1">{question.descricao}</p>
+                        <p className="text-lg font-bold text-white flex-1">{question.titulo}</p>
                         {isAnswered && (
                           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
                             <span className="text-white font-bold">✓</span>
