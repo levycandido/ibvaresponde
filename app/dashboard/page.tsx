@@ -28,40 +28,9 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
-    const fetchAllResponses = async () => {
-      try {
-        setLoadingResponses(true)
-
-        // Carregar apenas pesquisas publicadas
-        const publishedSurveys = surveys.filter(s => s.status === SurveyStatus.PUBLISHED)
-
-        // Limitar a 3 requisições paralelas para evitar sobrecarregar a API
-        const batchSize = 3
-        const allRespArrays = []
-
-        for (let i = 0; i < publishedSurveys.length; i += batchSize) {
-          const batch = publishedSurveys.slice(i, i + batchSize)
-          const batchPromises = batch.map(survey =>
-            surveyService.getSurveyResponses(survey.surveyId)
-              .then(response => response.respostas || [])
-              .catch(() => [])
-          )
-          const batchResults = await Promise.all(batchPromises)
-          allRespArrays.push(...batchResults)
-        }
-
-        const allResps = allRespArrays.flat()
-        setAllResponses(allResps)
-        setHasFetched(true)
-      } catch (err) {
-        console.error('[Dashboard] Erro ao buscar respostas:', err)
-      } finally {
-        setLoadingResponses(false)
-      }
-    }
-
     if (surveys.length > 0 && !hasFetched) {
-      fetchAllResponses()
+      setLoadingResponses(false)
+      setHasFetched(true)
     }
   }, [surveys.length, hasFetched])
 
