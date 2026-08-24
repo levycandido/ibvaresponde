@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react'
-import { api } from '@/services/api'
+import { roomsService, Room } from '@/services/roomsService'
 
-export interface Room {
-  roomId: string
-  name: string
-}
+export { Room }
 
 export function useRooms() {
   const [rooms, setRooms] = useState<Room[]>([])
@@ -17,13 +14,8 @@ export function useRooms() {
         setLoading(true)
         setError(null)
         console.log('[useRooms] Iniciando fetch de salas...')
-        const response = await api.get<Room[] | any>('/rooms')
-        console.log('[useRooms] Resposta recebida:', response)
-
-        // Handle both array response and wrapped response
-        const roomsData = Array.isArray(response) ? response : response?.items || response?.rooms || []
-        console.log('[useRooms] Salas processadas:', roomsData)
-
+        const roomsData = await roomsService.getRooms()
+        console.log('[useRooms] Salas recebidas:', roomsData)
         setRooms(roomsData)
       } catch (err) {
         console.error('[useRooms] Erro ao buscar salas:', err)
