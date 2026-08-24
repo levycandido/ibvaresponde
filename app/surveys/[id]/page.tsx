@@ -312,66 +312,51 @@ export default function SurveyDetailPage() {
           </motion.div>
         )}
 
-        {/* Room Selection */}
+        {/* Room Selection - Compact */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
           className="mb-6"
         >
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-            <label className="block text-sm font-bold text-gray-700 mb-3">
-              📍 Selecione a Sala
-            </label>
-            {roomsLoading ? (
-              <div className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 flex items-center gap-2">
-                <div className="animate-spin h-4 w-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
-                Carregando salas...
-              </div>
-            ) : rooms.length === 0 ? (
-              <>
-                <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <p className="text-sm text-yellow-800 font-medium">
-                    ⚠️ Não foi possível carregar as salas da Lambda
-                  </p>
-                  <p className="text-xs text-yellow-700 mt-1">
-                    Digite o nome da sala manualmente
-                  </p>
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+            <div className="flex items-center gap-3">
+              <label className="text-sm font-bold text-gray-700 whitespace-nowrap">
+                📍 Sala:
+              </label>
+              {roomsLoading ? (
+                <div className="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 flex items-center gap-2 text-sm">
+                  <div className="animate-spin h-3 w-3 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+                  Carregando...
                 </div>
+              ) : rooms.length === 0 ? (
                 <input
                   type="text"
                   value={selectedRoom}
                   onChange={(e) => setSelectedRoom(e.target.value)}
-                  placeholder="Ex: Sala A, Sala 1, Classrooms, etc."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                  placeholder="Digite a sala..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900"
                 />
-                {selectedRoom && (
-                  <p className="mt-2 text-sm text-green-600 font-medium">
-                    ✓ Sala: {selectedRoom}
-                  </p>
-                )}
-              </>
-            ) : (
-              <>
+              ) : (
                 <select
                   value={selectedRoom}
                   onChange={(e) => setSelectedRoom(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 bg-white"
                 >
-                  <option value="">-- Selecione uma sala --</option>
+                  <option value="">-- Selecione --</option>
                   {rooms.map((room) => (
                     <option key={room.roomId} value={room.name}>
                       {room.name}
                     </option>
                   ))}
                 </select>
-                {selectedRoom && (
-                  <p className="mt-2 text-sm text-green-600 font-medium">
-                    ✓ Sala selecionada: {selectedRoom}
-                  </p>
-                )}
-              </>
-            )}
+              )}
+              {selectedRoom && (
+                <span className="text-xs text-green-600 font-bold whitespace-nowrap">
+                  ✓
+                </span>
+              )}
+            </div>
           </div>
         </motion.div>
 
