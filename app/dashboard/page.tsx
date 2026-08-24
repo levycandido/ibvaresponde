@@ -28,11 +28,11 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
-    if (surveys.length > 0 && !hasFetched) {
+    if (!surveysLoading) {
       setLoadingResponses(false)
       setHasFetched(true)
     }
-  }, [surveys.length, hasFetched])
+  }, [surveysLoading])
 
   const publishedSurveys = surveys.filter(s => s.status === SurveyStatus.PUBLISHED)
   const activeSurveys = publishedSurveys.filter(s => isSurveyActive(s.dataFim)).length
@@ -40,9 +40,9 @@ export default function DashboardPage() {
   const totalResponses = allResponses.length
   const uniqueParticipants = new Set(allResponses.map(r => r.userId)).size
 
-  const isLoading = surveysLoading || loadingResponses
+  const isLoading = surveysLoading
 
-  console.log('[Dashboard] Estado:', { surveysLoading, loadingResponses, isLoading, surveysCount: surveys.length })
+  console.log('[Dashboard] Estado:', { surveysLoading, surveysCount: surveys.length, isLoading })
 
   if (isLoading) {
     return (
