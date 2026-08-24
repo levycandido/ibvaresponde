@@ -328,6 +328,29 @@ export default function SurveyDetailPage() {
                 <div className="animate-spin h-4 w-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
                 Carregando salas...
               </div>
+            ) : rooms.length === 0 ? (
+              <>
+                <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <p className="text-sm text-yellow-800 font-medium">
+                    ⚠️ Não foi possível carregar as salas da Lambda
+                  </p>
+                  <p className="text-xs text-yellow-700 mt-1">
+                    Digite o nome da sala manualmente
+                  </p>
+                </div>
+                <input
+                  type="text"
+                  value={selectedRoom}
+                  onChange={(e) => setSelectedRoom(e.target.value)}
+                  placeholder="Ex: Sala A, Sala 1, Classrooms, etc."
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                />
+                {selectedRoom && (
+                  <p className="mt-2 text-sm text-green-600 font-medium">
+                    ✓ Sala: {selectedRoom}
+                  </p>
+                )}
+              </>
             ) : (
               <>
                 <select
