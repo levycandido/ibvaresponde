@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FileText, BarChart3, Users, Loader } from 'lucide-react'
+import { FileText, BarChart3, Users, Loader, Plus } from 'lucide-react'
 import { Card, CardBody } from '@/components/ui/card'
 import { Container } from '@/components/layout/container'
 import { BottomNav } from '@/components/layout/bottom-nav'
@@ -130,6 +130,27 @@ export default function DashboardPage() {
         </div>
 
         <div className="px-6 py-6 space-y-6 pb-24">
+          {/* Quick Actions for Admin */}
+          {user?.roles?.includes('ADMIN') || user?.roles?.includes('admin') ? (
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold mb-1">Criar Nova Pesquisa</h2>
+                  <p className="text-blue-100">Inicie uma nova pesquisa rapidamente</p>
+                </div>
+                <Link href="/surveys/new">
+                  <Button
+                    className="bg-white text-blue-600 hover:bg-blue-50 font-bold flex items-center gap-2 px-6 py-3"
+                    variant="primary"
+                  >
+                    <Plus size={20} />
+                    Novo
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          ) : null}
+
           {/* Metrics Grid 2x2 */}
           <div>
             <div className="grid grid-cols-2 gap-3.5">
