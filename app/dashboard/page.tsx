@@ -64,7 +64,7 @@ export default function DashboardPage() {
         <div className="bg-surface border-b border-border-light sticky top-0 z-10">
           <div className="px-6 py-6">
             <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
+              <div className="flex-1" suppressHydrationWarning>
                 <h1 className="text-4xl font-bold text-gray-900 leading-tight">
                   Olá, {user?.nome || 'Usuário'}! 👋
                 </h1>
@@ -74,6 +74,7 @@ export default function DashboardPage() {
                 <div
                   className="w-14 h-14 rounded-2xl flex items-center justify-center text-white text-xl font-bold flex-shrink-0"
                   style={{ backgroundColor: user?.cor || '#5B5FEF' }}
+                  suppressHydrationWarning
                 >
                   {user?.nome.charAt(0).toUpperCase() || 'U'}
                 </div>
