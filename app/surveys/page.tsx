@@ -61,7 +61,7 @@ export default function SurveysPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="mb-8"
+            className="mb-6 space-y-4"
           >
             <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm w-full sm:w-auto">
               <div className="flex items-start justify-between">
@@ -76,6 +76,31 @@ export default function SurveysPage() {
                 </div>
               </div>
             </div>
+
+            {/* Admin Button - Secondary Create Button */}
+            {isAdmin && (
+              <Link href="/surveys/new">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-white rounded-2xl p-5 border-2 border-dashed border-blue-300 hover:border-blue-500 hover:shadow-md transition-all cursor-pointer"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <Plus size={20} className="text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="font-bold text-gray-900">Criar Pesquisa</p>
+                        <p className="text-xs text-gray-600">Inicie uma nova pesquisa agora</p>
+                      </div>
+                    </div>
+                    <div className="text-blue-600 font-bold">→</div>
+                  </div>
+                </motion.div>
+              </Link>
+            )}
           </motion.div>
         )}
 
