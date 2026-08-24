@@ -17,6 +17,7 @@ import { FrequenciaRecord } from '@/types'
 import Link from 'next/link'
 import { v4 as uuidv4 } from 'uuid'
 import { useEffect } from 'react'
+import { useRooms } from '@/hooks/useRooms'
 
 const INITIAL_FREQUENCIA: FrequenciaRecord[] = Array.from({ length: 10 }, () => ({
   nome: '',
@@ -33,6 +34,7 @@ export default function SurveyDetailPage() {
   const userId = user?.id || 'user-unknown'
 
   const { survey, loading, error } = useSurvey(surveyId)
+  const { rooms, loading: roomsLoading } = useRooms()
   const [responses, setResponses] = useState<Record<string, string | string[]>>({})
   const [frequencia, setFrequencia] = useState<FrequenciaRecord[]>(INITIAL_FREQUENCIA)
   const [selectedRoom, setSelectedRoom] = useState('')
@@ -321,17 +323,31 @@ export default function SurveyDetailPage() {
             <label className="block text-sm font-bold text-gray-700 mb-3">
               📍 Selecione a Sala
             </label>
-            <input
-              type="text"
-              value={selectedRoom}
-              onChange={(e) => setSelectedRoom(e.target.value)}
-              placeholder="Ex: Sala A, Sala 1, Classrooms, etc."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-            />
-            {selectedRoom && (
-              <p className="mt-2 text-sm text-green-600 font-medium">
-                ✓ Sala selecionada: {selectedRoom}
-              </p>
+            {roomsLoading ? (
+              <div className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 flex items-center gap-2">
+                <div className="animate-spin h-4 w-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+                Carregando salas...
+              </div>
+            ) : (
+              <>
+                <select
+                  value={selectedRoom}
+                  onChange={(e) => setSelectedRoom(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                >
+                  <option value="">-- Selecione uma sala --</option>
+                  {rooms.map((room) => (
+                    <option key={room.roomId} value={room.name}>
+                      {room.name}
+                    </option>
+                  ))}
+                </select>
+                {selectedRoom && (
+                  <p className="mt-2 text-sm text-green-600 font-medium">
+                    ✓ Sala selecionada: {selectedRoom}
+                  </p>
+                )}
+              </>
             )}
           </div>
         </motion.div>
