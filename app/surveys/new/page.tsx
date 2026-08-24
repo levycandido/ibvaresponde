@@ -206,12 +206,14 @@ export default function NewSurveyPage() {
           criadoPor: user?.id || 'user-unknown',
         },
         questions: questions.map((q, index) => ({
+          questionId: q.id,
           titulo: q.descricao,
           descricao: q.descricao,
           tipo: q.tipo,
           obrigatoria: q.obrigatoria,
           ordem: index + 1,
           options: q.opcoes.map((op, opIndex) => ({
+            optionId: op.id,
             descricao: op.titulo,
             ordem: opIndex + 1,
           })),
