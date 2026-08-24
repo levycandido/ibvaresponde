@@ -21,6 +21,11 @@ export default function DashboardPage() {
   const [allResponses, setAllResponses] = useState<any[]>([])
   const [loadingResponses, setLoadingResponses] = useState(true)
   const [hasFetched, setHasFetched] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleLogout = () => {
     logout()
@@ -90,9 +95,9 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="px-6 py-6 space-y-6 pb-24" suppressHydrationWarning>
+        <div className="px-6 py-6 space-y-6 pb-24">
           {/* Quick Actions for Admin */}
-          {user?.roles?.includes('ADMIN') || user?.roles?.includes('admin') ? (
+          {mounted && (user?.roles?.includes('ADMIN') || user?.roles?.includes('admin')) && (
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
               <div className="flex items-center justify-between">
                 <div>
@@ -110,7 +115,7 @@ export default function DashboardPage() {
                 </Link>
               </div>
             </div>
-          ) : null}
+          )}
 
           {/* Metrics Grid 2x2 */}
           <div>
