@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
-import { roomsService, Room } from '@/services/roomsService'
-
-export { Room }
+import { roomsService, type Room } from '@/services/roomsService'
 
 export function useRooms() {
   const [rooms, setRooms] = useState<Room[]>([])
