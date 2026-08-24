@@ -15,14 +15,12 @@ import { SurveyStatus } from '@/types'
 import { isSurveyActive } from '@/utils/surveyStatus'
 
 export default function DashboardPage() {
-  const startTime = typeof window !== 'undefined' ? performance.now() : 0
-  console.log(`[Dashboard] ⏱️ Página iniciando em: ${new Date().toLocaleTimeString()}`)
-
   const router = useRouter()
   const { user, logout } = useCurrentUser()
   const { surveys, loading: surveysLoading } = useSurveys()
   const [allResponses, setAllResponses] = useState<any[]>([])
   const [loadingResponses, setLoadingResponses] = useState(true)
+  const [hasFetched, setHasFetched] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -32,14 +30,10 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchAllResponses = async () => {
       try {
-        const fetchStart = performance.now()
-        console.log(`[Dashboard] 🔄 Iniciando fetch de respostas em: ${new Date().toLocaleTimeString()}`)
-
         setLoadingResponses(true)
 
         // Carregar apenas pesquisas publicadas
         const publishedSurveys = surveys.filter(s => s.status === SurveyStatus.PUBLISHED)
-        console.log(`[Dashboard] 📊 Pesquisas publicadas a carregar: ${publishedSurveys.length}`)
 
         // Limitar a 3 requisições paralelas para evitar sobrecarregar a API
         const batchSize = 3
@@ -57,21 +51,19 @@ export default function DashboardPage() {
         }
 
         const allResps = allRespArrays.flat()
-        const totalTime = (performance.now() - fetchStart).toFixed(2)
-        console.log(`[Dashboard] ✅ Fetch completo! Tempo: ${totalTime}ms | Respostas: ${allResps.length}`)
-
         setAllResponses(allResps)
+        setHasFetched(true)
       } catch (err) {
-        console.error('[Dashboard] ❌ Erro ao buscar respostas:', err)
+        console.error('[Dashboard] Erro ao buscar respostas:', err)
       } finally {
         setLoadingResponses(false)
       }
     }
 
-    if (surveys.length > 0) {
+    if (surveys.length > 0 && !hasFetched) {
       fetchAllResponses()
     }
-  }, [surveys])
+  }, [surveys.length, hasFetched])
 
   const publishedSurveys = surveys.filter(s => s.status === SurveyStatus.PUBLISHED)
   const activeSurveys = publishedSurveys.filter(s => isSurveyActive(s.dataFim)).length
@@ -93,9 +85,6 @@ export default function DashboardPage() {
       </div>
     )
   }
-
-  const renderTime = (performance.now() - startTime).toFixed(2)
-  console.log(`[Dashboard] 🎉 Dashboard renderizado em: ${renderTime}ms`)
 
   return (
     <div className="min-h-screen bg-bg-primary">
