@@ -243,15 +243,10 @@ export default function SurveysPage() {
 
                     {/* Admin Options */}
                     {isAdmin && (
-                      <div className="mt-2 flex gap-2">
-                        <Link href={`/surveys/${survey.surveyId}/responses`} className="flex-1">
+                      <div className="mt-2">
+                        <Link href={`/surveys/${survey.surveyId}/responses`}>
                           <Button variant="secondary" fullWidth size="sm">
                             Ver Respostas
-                          </Button>
-                        </Link>
-                        <Link href={`/surveys/${survey.surveyId}/edit`} className="flex-1">
-                          <Button variant="secondary" fullWidth size="sm">
-                            Editar
                           </Button>
                         </Link>
                       </div>
