@@ -42,6 +42,8 @@ export default function DashboardPage() {
 
   const isLoading = surveysLoading || loadingResponses
 
+  console.log('[Dashboard] Estado:', { surveysLoading, loadingResponses, isLoading, surveysCount: surveys.length })
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-bg-primary flex items-center justify-center">
