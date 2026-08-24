@@ -106,7 +106,7 @@ export default function DashboardPage() {
                 </div>
                 <Link href="/surveys/new">
                   <Button
-                    className="bg-white text-blue-600 hover:bg-blue-50 font-bold flex items-center gap-2 px-6 py-3"
+                    className="bg-white/20 text-white hover:bg-white/30 font-bold flex items-center gap-2 px-6 py-3 border border-white/40"
                     variant="primary"
                   >
                     <Plus size={20} />
