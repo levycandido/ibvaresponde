@@ -241,7 +241,7 @@ export default function SurveysPage() {
               transition={{ delay: 0.3, duration: 0.3 }}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              className="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-r from-primary to-primary-accent text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all z-40"
+              className="fixed bottom-28 right-4 sm:right-6 w-14 h-14 bg-gradient-to-r from-primary to-primary-accent text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all z-50"
               title="Nova Pesquisa"
             >
               <Plus size={24} />
